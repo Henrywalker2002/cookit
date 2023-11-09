@@ -1,4 +1,4 @@
-import OnboardingScreen from "./OnBoarding";
+import OnboardingScreen from "./OnBoarding3";
 import React, { useState, useEffect } from "react";
 import { useLazyGetUserQuery } from "@/Services";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -9,7 +9,7 @@ type WelcomeScreenNavigatorProps = NativeStackScreenProps<
   RootStackParamList,
   RootScreens.ONBOARDING1
 >;
-export const OnBoardingContainer = ({
+export const OnBoardingContainer3 = ({
     navigation,
   }: WelcomeScreenNavigatorProps) => {
     const onNavigate = (screen: RootScreens) => {
