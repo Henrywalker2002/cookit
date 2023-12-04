@@ -2,14 +2,14 @@ from base.views import CustomModelViewSetBase
 from favorite_food.models import FavoriteFood
 from favorite_food.serializers import FavoriteFoodSerializer, DeleteFavoriteFoodSerializer
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.decorators import action
 
 class FavoriteFoodModelViewSet(CustomModelViewSetBase):
     
     serializer_class = {'default' : FavoriteFoodSerializer, "destroy" : DeleteFavoriteFoodSerializer}
     queryset = FavoriteFood.objects.all()
-    
+    permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['user', 'food']
     
     def get_queryset(self):
