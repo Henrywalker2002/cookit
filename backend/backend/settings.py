@@ -153,8 +153,11 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = "user.User"
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 ALLOWED_HOSTS = [
+    "*",
     "b591-1-55-71-23.ngrok-free.app",
     "127.0.0.1",
     "cookit.pagekite.me",
