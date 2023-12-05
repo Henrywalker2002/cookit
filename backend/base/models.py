@@ -5,7 +5,7 @@ from base.custom_middleware import get_current_user
 
 class BaseModel(models.Model):
     """
-    BaseModel contains id, created_at, modified_at, created_by, updated_by, email_created_by, email_updated_by
+    BaseModel contains id, created_at, modified_at, created_by, updated_by
     """
 
     id = models.AutoField(primary_key= True)
