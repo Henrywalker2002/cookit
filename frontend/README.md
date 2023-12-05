@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+# React Native Expo Redux Template
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![Build Expo OTA](https://github.com/hpccbk/react-native-expo-redux-template/actions/workflows/update.yml/badge.svg)](https://github.com/hpccbk/react-native-expo-redux-template/actions/workflows/update.yml)
 
-## Available Scripts
+This is a template for building React Native apps with the Expo framework and Redux for state management. It includes a basic file structure and configuration for setting up a Redux store, along with some example actions and reducers.
 
-In the project directory, you can run:
+## Getting Started
 
-### `npm start`
+To use this template, you should have the Expo CLI installed on your system. You can install it globally using npm:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+npm install -g expo-cli
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+To create a new project using this template, please clone this repository. Then run:
 
-### `npm test`
+```bash
+yarn install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## File Structure
 
-### `npm run build`
+The template's file structure is organized as follows:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `src/`: This folder contains the source code for the template, organized into sub-folders as follows:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  - `Components/`: This folder contains reusable components for the app.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  - `Config/`: This folder contains configuration files for the app, such as API endpoints, environment settings, and theme configuration.
 
-### `npm run eject`
+  - `Hooks/`: This folder contains Redux and custom hooks for the app.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+  - `Localization/`: This folder contains localization files for the app, allowing for easy translation to different languages.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  - `Navigation/`: This folder contains navigation files for the app, such as stack navigation, drawer navigation, or tab navigation.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+  - `Screens/`: This folder contains the main screens of the app.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+  - `Services/`: This folder contains service files for the app, such as API calls or Firebase integration.
 
-## Learn More
+  - `Store/`: This folder contains Redux-related files, including the store configuration and reducers.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  - `Theme/`: This folder contains files related to the app's visual theme, such as colors, typography, and spacing.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Known Issues
 
-### Code Splitting
+```js
+ApiV2Error: Not Authorized.
+```
+Reason and how to remove this issue: https://github.com/expo/expo-cli/issues/2436#issuecomment-1308534521
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+## Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+If you have suggestions for how this template could be improved, or want to report a bug, please open an issue or a pull request. We welcome contributions from the community!
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
