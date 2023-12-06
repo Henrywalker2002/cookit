@@ -162,3 +162,5 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "cookit.pagekite.me",
 ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
