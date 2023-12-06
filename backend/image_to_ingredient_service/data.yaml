@@ -1,0 +1,49 @@
+names:
+- '-'
+- almond
+- apple
+- avocado
+- beef
+- bell pepper
+- blueberry
+- bread
+- broccoli
+- butter
+- carrot
+- cheese
+- chilli
+- cookie
+- corn
+- cucumber
+- egg
+- eggplant
+- garlic
+- lemon
+- milk
+- mozarella cheese
+- mushroom
+- mussel
+- onion
+- oyster
+- parmesan cheese
+- pasta
+- pork rib
+- potato
+- salmon
+- scallop
+- shrimp
+- strawberry
+- toast bread
+- tomato
+- tuna
+- yogurt
+nc: 38
+roboflow:
+  license: CC BY 4.0
+  project: food-ingredient-recognition
+  url: https://universe.roboflow.com/thanh-huy-phan/food-ingredient-recognition/dataset/4
+  version: 4
+  workspace: thanh-huy-phan
+test: D:\The winner takes its all\HK 231\Phát triển ứng dụng cho điện thoại\Food-ingredient-recognition-4\test\images
+train: D:\The winner takes its all\HK 231\Phát triển ứng dụng cho điện thoại\Food-ingredient-recognition-4\train\images
+val: D:\The winner takes its all\HK 231\Phát triển ứng dụng cho điện thoại\Food-ingredient-recognition-4\valid\images
