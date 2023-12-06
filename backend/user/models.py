@@ -14,6 +14,10 @@ class UserAcitivityLevelChoice(models.TextChoices):
     MODERATELY_ACTIVE = "MODERATELY_ACTIVE", "MODERATELY_ACTIVE"
     VERY_ACTIVE = "VERY_ACTIVE", "VERY_ACTIVE"
     EXTREMELY_ACTIVE = "EXTREMELY_ACTIVE", "EXTREMELY_ACTIVE"
+    
+class UserTypeChoice(models.TextChoices):
+    ADMIN = "ADMIN", "ADMIN"
+    USER = "USER", "USER"
 
 class User(AbstractBaseUser):
     id = models.UUIDField(primary_key= True, default= uuid.uuid4, editable= False)
@@ -21,6 +25,7 @@ class User(AbstractBaseUser):
     password = models.CharField(max_length=128, null=False)
     full_name = models.CharField(max_length=128, null=False)
     is_active = models.BooleanField(default=True)
+    role = models.CharField(max_length=128, choices=UserTypeChoice.choices, default=UserTypeChoice.USER)
     
     gender = models.CharField(max_length=128, choices=UserGenderChoice.choices, null= True)
     day_of_birth = models.DateField(null= True)

@@ -20,7 +20,7 @@ class FavoriteFoodSerializer(serializers.ModelSerializer):
 class DeleteFavoriteFoodSerializer(serializers.ModelSerializer):
     
     user = serializers.PrimaryKeyRelatedField(read_only = True)
-    food = serializers.PrimaryKeyRelatedField(queryset = Food.objects.all())
+    food = serializers.PrimaryKeyRelatedField(queryset = Food.objects.all(), required = False)
     
     def validate(self, attrs):
         self.context['user'] = self.context['request'].user

@@ -1,8 +1,6 @@
 import uuid
-import logging
 import threading
 
-logging.basicConfig(filename="log.txt", level=logging.INFO)
 
 _user = threading.local()
 
@@ -22,10 +20,7 @@ class CustomMiddleware:
         # id for debug logger
         id = uuid.uuid4()
         _user.__setattr__('request_id', id)
-        logging.info(
-            f'request id {str(id)} start request with method {request.method} path {request.get_full_path()} body {request.body}')
         response = self.get_response(request)
-        logging.info(f'request id {str(id)} end request\n')
         return response
 
 
