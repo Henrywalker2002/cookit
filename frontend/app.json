@@ -11,10 +11,6 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/82716b8e-2818-4161-8a88-c571df4369a5"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -23,20 +19,24 @@
       "bundleIdentifier": "com.hpcc.expo-redux-template"
     },
     "android": {
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "INTERNET"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.hpcc.expo_redux_template"
+      "package": ""
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [],
     "extra": {
-      "eas": {
-        "projectId": "82716b8e-2818-4161-8a88-c571df4369a5"
-      }
     },
     "runtimeVersion": {
       "policy": "sdkVersion"

@@ -4,9 +4,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { MainNavigator } from "./Main";
 import { WelcomeContainer } from "@/Screens/Welcome";
-import { OnBoardingContainer } from "@/Screens/OnBoarding/OnBoardingContainer";
-import { OnBoardingContainer2 } from "@/Screens/OnBoarding2/OnBoardingContainer2";
-import { OnBoardingContainer3 } from "@/Screens/OnBoarding3/OnBoardingContainer3";
+import { OnBoardingContainer } from "../Screens/Onboarding/OnboardingContainer";
+import { OnBoardingContainer2 } from "../Screens/OnBoarding2/OnBoardingContainer2";
+import { OnBoardingContainer3 } from "../Screens/OnBoarding3/OnBoardingContainer3";
 import { RootScreens } from "@/Screens";
 
 export type RootStackParamList = {
@@ -15,6 +15,7 @@ export type RootStackParamList = {
   [RootScreens.ONBOARDING1] : undefined;
   [RootScreens.ONBOARDING2] : undefined;
   [RootScreens.ONBOARDING3] : undefined;
+  [RootScreens.DETAIL]: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();

@@ -3,5 +3,6 @@ export enum RootScreens {
   WELCOME = "Welcome",
   ONBOARDING1 = "Onboarding1",
   ONBOARDING2 = "Onboarding2",
-  ONBOARDING3 = "Onboarding3"
+  ONBOARDING3 = "Onboarding3",
+  DETAIL = "Detail",
 }

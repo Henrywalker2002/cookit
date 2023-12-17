@@ -29,7 +29,7 @@ class FoodModelViewSet(CustomModelViewSetBase):
     queryset = Food.objects.all()
     filterset_fields = ["name", ]
     search_fields = ["name", "ingredients__original"]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def help_create(self, data, food_id):
         for item in data:

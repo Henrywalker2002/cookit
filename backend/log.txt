@@ -3198,3 +3198,635 @@ Traceback (most recent call last):
 django.db.utils.IntegrityError: null value in column "rating" of relation "food_foodfeedback" violates not-null constraint
 DETAIL:  Failing row contains (3, 2023-11-30 04:09:20.679241+00, 2023-11-30 04:09:20.679241+00, null, string, null, 6, null, cc4cc521-95a9-46cd-bf26-2913c06f7cbd).
 
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:root:request id a3182f0f-20d7-4db3-a997-02280a04320e start request with method GET path / body b''
+INFO:root:request id a3182f0f-20d7-4db3-a997-02280a04320e end request
+
+INFO:root:request id 107085c1-f5a6-4aab-9531-bd2c13738f2a start request with method GET path /favicon.ico body b''
+INFO:root:request id 107085c1-f5a6-4aab-9531-bd2c13738f2a end request
+
+WARNING:django.request:Not Found: /favicon.ico
+INFO:root:request id a0fb7f7b-e396-4abb-8fd5-4f2a38bc0498 start request with method GET path /docs body b''
+INFO:root:request id a0fb7f7b-e396-4abb-8fd5-4f2a38bc0498 end request
+
+INFO:root:request id e9520b21-9d1b-440d-ac2b-62329e66de18 start request with method GET path /docs/ body b''
+INFO:root:request id e9520b21-9d1b-440d-ac2b-62329e66de18 end request
+
+INFO:root:request id e54b0f53-861c-4f29-b55c-088717c959db start request with method GET path /docs/?format=openapi body b''
+WARNING:drf_yasg.inspectors.base:view's FavoriteFoodModelViewSet raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2688, in to_python
+    return uuid.UUID(**{input_form: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\AppData\Local\Programs\Python\Python311\Lib\uuid.py", line 175, in __init__
+    hex = hex.replace('urn:', '').replace('uuid:', '')
+          ^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'replace'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+           ^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\favorite_food\views.py", line 16, in get_queryset
+    return super().get_queryset().filter(user = self.request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 166, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2672, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2690, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“AnonymousUser” is not a valid UUID.']
+WARNING:drf_yasg.inspectors.base:view's FavoriteFoodModelViewSet raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2688, in to_python
+    return uuid.UUID(**{input_form: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\AppData\Local\Programs\Python\Python311\Lib\uuid.py", line 175, in __init__
+    hex = hex.replace('urn:', '').replace('uuid:', '')
+          ^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'replace'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+           ^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\favorite_food\views.py", line 16, in get_queryset
+    return super().get_queryset().filter(user = self.request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 166, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2672, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2690, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“AnonymousUser” is not a valid UUID.']
+WARNING:drf_yasg.inspectors.base:view's FavoriteFoodModelViewSet raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2688, in to_python
+    return uuid.UUID(**{input_form: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\AppData\Local\Programs\Python\Python311\Lib\uuid.py", line 175, in __init__
+    hex = hex.replace('urn:', '').replace('uuid:', '')
+          ^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'replace'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+           ^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\favorite_food\views.py", line 16, in get_queryset
+    return super().get_queryset().filter(user = self.request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 166, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2672, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2690, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“AnonymousUser” is not a valid UUID.']
+WARNING:drf_yasg.inspectors.base:view's FavoriteFoodModelViewSet raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2688, in to_python
+    return uuid.UUID(**{input_form: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\AppData\Local\Programs\Python\Python311\Lib\uuid.py", line 175, in __init__
+    hex = hex.replace('urn:', '').replace('uuid:', '')
+          ^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'replace'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+           ^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\favorite_food\views.py", line 16, in get_queryset
+    return super().get_queryset().filter(user = self.request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 166, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2672, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thanh\SourcefromMe\cookit\backend\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2690, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“AnonymousUser” is not a valid UUID.']
+INFO:root:request id e54b0f53-861c-4f29-b55c-088717c959db end request
+
+INFO:root:request id 6b3fea6f-04d3-4140-bc19-7c55b3aa5a20 start request with method GET path /accounts/login/?next=/docs/ body b''
+INFO:root:request id 6b3fea6f-04d3-4140-bc19-7c55b3aa5a20 end request
+
+WARNING:django.request:Not Found: /accounts/login/
+INFO:root:request id 7f09435f-3ab7-47a5-8a40-f4e977eb39bf start request with method POST path /login/ body b'{\n  "email": "user@example.com",\n  "password": "string"\n}'
+INFO:root:request id 7f09435f-3ab7-47a5-8a40-f4e977eb39bf end request
+
+INFO:root:request id b032967a-d32b-4d0c-a439-43871caa8013 start request with method GET path /docs/ body b''
+INFO:root:request id b032967a-d32b-4d0c-a439-43871caa8013 end request
+
+INFO:root:request id 19c59d09-5086-4d8b-8208-e14bd265759f start request with method GET path /docs/?format=openapi body b''
+INFO:root:request id 19c59d09-5086-4d8b-8208-e14bd265759f end request
+
+INFO:root:request id c7def5d5-733f-4cb3-82db-58925fd6baec start request with method GET path /food/ body b''
+INFO:root:request id c7def5d5-733f-4cb3-82db-58925fd6baec end request
+
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:root:request id 911f78ca-9719-4e39-8658-e7c5928de4be start request with method GET path /food/6/ body b''
+INFO:root:request id 911f78ca-9719-4e39-8658-e7c5928de4be end request
+
+INFO:root:request id a3e36eb9-6837-401a-8f13-cd89f3a884a0 start request with method GET path / body b''
+INFO:root:request id a3e36eb9-6837-401a-8f13-cd89f3a884a0 end request
+
+INFO:root:request id ef45a818-f260-4d0b-bc2b-f3d9a4dbc833 start request with method GET path /favicon.ico body b''
+INFO:root:request id ef45a818-f260-4d0b-bc2b-f3d9a4dbc833 end request
+
+WARNING:django.request:Not Found: /favicon.ico
+INFO:root:request id 1fbe1414-3397-4040-b777-816a7144f9ec start request with method GET path /docs body b''
+INFO:root:request id 1fbe1414-3397-4040-b777-816a7144f9ec end request
+
+INFO:root:request id c66618e4-fd49-4358-a09f-2819023afab9 start request with method GET path /docs/ body b''
+INFO:root:request id c66618e4-fd49-4358-a09f-2819023afab9 end request
+
+INFO:root:request id ad86aef2-93e6-466b-bf11-a788ebe42619 start request with method GET path /docs/?format=openapi body b''
+INFO:root:request id ad86aef2-93e6-466b-bf11-a788ebe42619 end request
+
+INFO:root:request id 964038f4-5e20-4909-b910-63fa4e9399ba start request with method GET path /food/6/ body b''
+INFO:root:request id 964038f4-5e20-4909-b910-63fa4e9399ba end request
+
+INFO:root:request id f80261d7-7ccb-4a70-8841-964887b87154 start request with method GET path /food/6 body b''
+INFO:root:request id f80261d7-7ccb-4a70-8841-964887b87154 end request
+
+INFO:root:request id bec6924b-3132-44cb-a753-6d300d0747f7 start request with method GET path /food/6/ body b''
+INFO:root:request id bec6924b-3132-44cb-a753-6d300d0747f7 end request
+
+INFO:root:request id c1553ecf-7f23-458b-a180-b363fc5c70f9 start request with method GET path /food/6 body b''
+INFO:root:request id c1553ecf-7f23-458b-a180-b363fc5c70f9 end request
+
+INFO:root:request id 0ed4d1ec-dac2-4b65-97aa-3e35b8ae1e87 start request with method GET path /food/6/ body b''
+INFO:root:request id 0ed4d1ec-dac2-4b65-97aa-3e35b8ae1e87 end request
+
+INFO:root:request id 218ca6f5-d59f-4e5a-be4c-ea25b7e07871 start request with method GET path /food/6/ body b''
+INFO:root:request id 218ca6f5-d59f-4e5a-be4c-ea25b7e07871 end request
+
+INFO:root:request id e88d47ed-a647-4412-8278-5ec4315eff9c start request with method GET path /food/6/ body b''
+INFO:root:request id e88d47ed-a647-4412-8278-5ec4315eff9c end request
+
+INFO:root:request id 4f5c20e5-5f92-4e6a-be53-555666a4aec8 start request with method GET path /food/6/ body b''
+INFO:root:request id 4f5c20e5-5f92-4e6a-be53-555666a4aec8 end request
+
+INFO:root:request id 6f1b593c-e2f2-4063-87a5-b35af2fdb394 start request with method GET path /food/6/ body b''
+INFO:root:request id 6f1b593c-e2f2-4063-87a5-b35af2fdb394 end request
+
+INFO:root:request id 24bb4f5f-e254-46f8-89dc-d0fcdcd69a72 start request with method GET path /food/6/ body b''
+INFO:root:request id 24bb4f5f-e254-46f8-89dc-d0fcdcd69a72 end request
+
+INFO:root:request id a648d896-28fa-4b3c-ba61-6bd2d4fe01e8 start request with method GET path /food/6/ body b''
+INFO:root:request id a648d896-28fa-4b3c-ba61-6bd2d4fe01e8 end request
+
+INFO:root:request id 7b401de6-b575-430f-8056-0df1f3c75b5e start request with method GET path /food/6/ body b''
+INFO:root:request id 7b401de6-b575-430f-8056-0df1f3c75b5e end request
+
+INFO:root:request id 89aa6ac1-11d3-407c-bbdf-4d1339433806 start request with method GET path /food/6/ body b''
+INFO:root:request id 89aa6ac1-11d3-407c-bbdf-4d1339433806 end request
+
+INFO:root:request id 25e0d69c-a4fa-42fb-9c28-1727cbe1699c start request with method GET path /food/6/ body b''
+INFO:root:request id 25e0d69c-a4fa-42fb-9c28-1727cbe1699c end request
+
+INFO:root:request id 03032ea4-0e9c-497d-8914-c0472a9e89ba start request with method GET path /food/6/ body b''
+INFO:root:request id 03032ea4-0e9c-497d-8914-c0472a9e89ba end request
+
+INFO:root:request id 5ec068bb-c730-4bcc-ad2d-7ecd3265193e start request with method GET path /food/6/ body b''
+INFO:root:request id 5ec068bb-c730-4bcc-ad2d-7ecd3265193e end request
+
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:root:request id 87a03335-6cb2-40d9-8c34-0dd7cd612b29 start request with method GET path /food/6/ body b''
+INFO:root:request id 87a03335-6cb2-40d9-8c34-0dd7cd612b29 end request
+
+INFO:root:request id 3a4551c4-196c-4218-8a0b-69853aac6949 start request with method GET path /favicon.ico body b''
+INFO:root:request id 3a4551c4-196c-4218-8a0b-69853aac6949 end request
+
+WARNING:django.request:Not Found: /favicon.ico
+INFO:root:request id de48cc80-4d00-4465-85b2-516ddaea5b2d start request with method GET path /food/6/ body b''
+INFO:root:request id de48cc80-4d00-4465-85b2-516ddaea5b2d end request
+
+INFO:root:request id f7894c97-81ab-4bcf-994a-f4f71cabae03 start request with method GET path /docs body b''
+INFO:root:request id f7894c97-81ab-4bcf-994a-f4f71cabae03 end request
+
+INFO:root:request id cdc26dd9-f44b-4f3e-b976-85527613d3a8 start request with method GET path /docs/ body b''
+INFO:root:request id cdc26dd9-f44b-4f3e-b976-85527613d3a8 end request
+
+INFO:root:request id 49599efc-f14c-4452-80c5-19c24d306c1b start request with method GET path /docs/?format=openapi body b''
+INFO:root:request id 49599efc-f14c-4452-80c5-19c24d306c1b end request
+
+INFO:root:request id 8975d842-d44e-4e04-96cf-f0a366950464 start request with method GET path /food/ body b''
+INFO:root:request id 8975d842-d44e-4e04-96cf-f0a366950464 end request
+
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:root:request id 1fb083ff-6ff9-4264-862e-738cf45298c3 start request with method GET path /food/6/ body b''
+INFO:root:request id 1fb083ff-6ff9-4264-862e-738cf45298c3 end request
+
+INFO:django.utils.autoreload:C:\Users\thanh\SourcefromMe\cookit\backend\backend\settings.py changed, reloading.
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:django.utils.autoreload:C:\Users\thanh\SourcefromMe\cookit\backend\backend\settings.py changed, reloading.
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:django.utils.autoreload:C:\Users\thanh\SourcefromMe\cookit\backend\backend\settings.py changed, reloading.
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:root:request id 9ad1cd48-b089-49e1-93b6-db5b0f76d41d start request with method GET path / body b''
+INFO:root:request id 9ad1cd48-b089-49e1-93b6-db5b0f76d41d end request
+
+INFO:root:request id f000f393-5de5-4ad7-b6e8-0eb248915863 start request with method GET path /favicon.ico body b''
+INFO:root:request id f000f393-5de5-4ad7-b6e8-0eb248915863 end request
+
+WARNING:django.request:Not Found: /favicon.ico
+INFO:django.utils.autoreload:C:\Users\thanh\SourcefromMe\cookit\backend\backend\settings.py changed, reloading.
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:django.utils.autoreload:C:\Users\thanh\SourcefromMe\cookit\backend\backend\settings.py changed, reloading.
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:django.utils.autoreload:C:\Users\thanh\SourcefromMe\cookit\backend\backend\settings.py changed, reloading.
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:root:request id e2e1e20a-4acf-403f-b292-04d235cca656 start request with method GET path / body b''
+INFO:root:request id e2e1e20a-4acf-403f-b292-04d235cca656 end request
+
+INFO:root:request id 4594d334-4339-4d58-9399-db593dc78963 start request with method GET path /favicon.ico body b''
+INFO:root:request id 4594d334-4339-4d58-9399-db593dc78963 end request
+
+WARNING:django.request:Not Found: /favicon.ico
+INFO:root:request id 8d089203-2d97-4ef3-afd9-1e5f8b8dbaae start request with method GET path /food/5/ body b''
+INFO:root:request id 8d089203-2d97-4ef3-afd9-1e5f8b8dbaae end request
+
+INFO:root:request id 0c841081-8f1e-4d65-ae70-4d8fada74ea6 start request with method GET path /food/5/ body b''
+INFO:root:request id 0c841081-8f1e-4d65-ae70-4d8fada74ea6 end request
+
+INFO:root:request id 36fe7dfa-0973-4aca-bb1e-a123eb94fa7d start request with method GET path /food/5/ body b''
+INFO:root:request id d5a64803-e877-4e31-a40b-2c0f356e9b31 start request with method GET path /food/5/ body b''
+INFO:root:request id 36fe7dfa-0973-4aca-bb1e-a123eb94fa7d end request
+
+INFO:root:request id d5a64803-e877-4e31-a40b-2c0f356e9b31 end request
+
+INFO:root:request id c3b62b38-05c1-423e-aa8e-c3e2311bd87a start request with method GET path /food/5/ body b''
+INFO:root:request id c3b62b38-05c1-423e-aa8e-c3e2311bd87a end request
+
+INFO:root:request id ca600cbd-b69b-47b4-976d-79a273edc4d9 start request with method GET path /food/5/ body b''
+INFO:root:request id ca600cbd-b69b-47b4-976d-79a273edc4d9 end request
+
+INFO:root:request id 94355cc3-dbb1-41a7-9fb5-3af207bcef6f start request with method GET path /food/5/ body b''
+INFO:root:request id 94355cc3-dbb1-41a7-9fb5-3af207bcef6f end request
+
+INFO:root:request id cacd85b4-c269-4270-8e95-f2eaea8662e7 start request with method GET path /food/5/ body b''
+INFO:root:request id cacd85b4-c269-4270-8e95-f2eaea8662e7 end request
+
+INFO:root:request id 52961638-65c8-4657-b596-b3232829ee6e start request with method GET path /food/5/ body b''
+INFO:root:request id 52961638-65c8-4657-b596-b3232829ee6e end request
+
+INFO:root:request id 72d51f4d-de07-44dd-8204-e97a1d2251be start request with method GET path /food/5/ body b''
+INFO:root:request id 72d51f4d-de07-44dd-8204-e97a1d2251be end request
+
+INFO:root:request id df8643a4-6abb-425a-bcfb-24100e3757b6 start request with method GET path /food/5/ body b''
+INFO:root:request id 0a5bb62c-8162-4b8a-a3c3-2b74aea9d3a7 start request with method GET path /food/5/ body b''
+INFO:root:request id 0a5bb62c-8162-4b8a-a3c3-2b74aea9d3a7 end request
+
+INFO:root:request id df8643a4-6abb-425a-bcfb-24100e3757b6 end request
+
+INFO:root:request id c7d82e04-897f-45e8-9e2e-e43a9e751d6a start request with method GET path /food/5/ body b''
+INFO:root:request id c7d82e04-897f-45e8-9e2e-e43a9e751d6a end request
+
+INFO:root:request id 872a11c8-5d2a-4c81-a0d0-982ea3f8e125 start request with method GET path /food/5/ body b''
+INFO:root:request id 872a11c8-5d2a-4c81-a0d0-982ea3f8e125 end request
+
+INFO:root:request id e51dbce2-99b4-4b77-a75f-f22c5b8ff629 start request with method GET path /food/5/ body b''
+INFO:root:request id e51dbce2-99b4-4b77-a75f-f22c5b8ff629 end request
+
+INFO:root:request id f772bbb9-6feb-4cdb-94fa-b315376e2dda start request with method GET path /food/5/ body b''
+INFO:root:request id f772bbb9-6feb-4cdb-94fa-b315376e2dda end request
+
+INFO:root:request id f687001a-eab9-4333-80cd-b2609793ab0e start request with method GET path /food/5/ body b''
+INFO:root:request id f687001a-eab9-4333-80cd-b2609793ab0e end request
+
+INFO:root:request id 70d1429c-cf80-4df3-81f9-57b98cb03006 start request with method GET path /food/5/ body b''
+INFO:root:request id 70d1429c-cf80-4df3-81f9-57b98cb03006 end request
+
+INFO:root:request id 1032f3ca-d0ec-4bc9-8f53-a418171c7367 start request with method GET path /food/5/ body b''
+INFO:root:request id 1032f3ca-d0ec-4bc9-8f53-a418171c7367 end request
+
+INFO:root:request id 6f574b63-c831-475c-97c8-f56c6d4b128f start request with method GET path /food/5/ body b''
+INFO:root:request id 6f574b63-c831-475c-97c8-f56c6d4b128f end request
+
+INFO:root:request id bbeb8213-320f-4aa7-9a98-9d709bc4fb7c start request with method GET path /food/5/ body b''
+INFO:root:request id bbeb8213-320f-4aa7-9a98-9d709bc4fb7c end request
+
+INFO:root:request id 4b7e0d73-b8d1-41d6-8499-95a14209ae3a start request with method GET path /food/5/ body b''
+INFO:root:request id 4b7e0d73-b8d1-41d6-8499-95a14209ae3a end request
+
+INFO:root:request id a93c02f8-5375-4f66-a6cb-b131c24a2603 start request with method GET path /food/5/ body b''
+INFO:root:request id a93c02f8-5375-4f66-a6cb-b131c24a2603 end request
+
+INFO:root:request id ed37cda5-a455-45ae-b849-e61a73d23351 start request with method GET path /food/5/ body b''
+INFO:root:request id ed37cda5-a455-45ae-b849-e61a73d23351 end request
+
+INFO:root:request id 078bdd08-e46f-4e6e-9437-3ce1bdda3262 start request with method GET path /food/5/ body b''
+INFO:root:request id 078bdd08-e46f-4e6e-9437-3ce1bdda3262 end request
+
+INFO:root:request id 7dc3e5b9-dfac-4d34-a423-d2ea3f47367a start request with method GET path /food/5/ body b''
+INFO:root:request id 7dc3e5b9-dfac-4d34-a423-d2ea3f47367a end request
+
+INFO:root:request id a6013f8c-7cef-4a69-8b34-11082731051d start request with method GET path /food/5/ body b''
+INFO:root:request id a6013f8c-7cef-4a69-8b34-11082731051d end request
+
+INFO:root:request id 671c5ac5-ff49-407c-8f59-809207b8acc0 start request with method GET path /food/5/ body b''
+INFO:root:request id 671c5ac5-ff49-407c-8f59-809207b8acc0 end request
+
+INFO:root:request id 3cd14c9a-e634-409c-9ce3-51562dd1b08b start request with method GET path /food/5/ body b''
+INFO:root:request id 3cd14c9a-e634-409c-9ce3-51562dd1b08b end request
+
+INFO:root:request id a231243c-cbee-4d66-86a1-e3b9a895471f start request with method GET path /food/5/ body b''
+INFO:root:request id a231243c-cbee-4d66-86a1-e3b9a895471f end request
+
+INFO:root:request id cadbf9ce-4b2a-41f1-b0e5-25b6456b6693 start request with method GET path /food/5/ body b''
+INFO:root:request id cadbf9ce-4b2a-41f1-b0e5-25b6456b6693 end request
+
+INFO:root:request id a5b00f19-2371-48f0-b6c1-ae4bdcdb6dc6 start request with method GET path /food/5/ body b''
+INFO:root:request id a5b00f19-2371-48f0-b6c1-ae4bdcdb6dc6 end request
+
+INFO:root:request id 5ed4731b-261a-4b1a-a751-1e571f707cb6 start request with method GET path /food/5/ body b''
+INFO:root:request id 5ed4731b-261a-4b1a-a751-1e571f707cb6 end request
+
+INFO:root:request id bd03164d-924f-4436-93e2-de5c5e377931 start request with method GET path /food/5/ body b''
+INFO:root:request id bd03164d-924f-4436-93e2-de5c5e377931 end request
+
+INFO:root:request id 8e4dffae-d912-417d-9095-e7722a97d1a0 start request with method GET path /food/5/ body b''
+INFO:root:request id 8e4dffae-d912-417d-9095-e7722a97d1a0 end request
+
+INFO:root:request id 78c4698f-22b6-4c8d-a22a-86f91cfa68f8 start request with method GET path /food/5/ body b''
+INFO:root:request id 78c4698f-22b6-4c8d-a22a-86f91cfa68f8 end request
+
+INFO:root:request id 949a270a-6d14-4e44-91a6-9624ac9eea91 start request with method GET path /food/5/ body b''
+INFO:root:request id 949a270a-6d14-4e44-91a6-9624ac9eea91 end request
+
+INFO:root:request id e9a7a4d3-2959-4d6b-8ac6-e6e0a8d7c480 start request with method GET path /food/5/ body b''
+INFO:root:request id e9a7a4d3-2959-4d6b-8ac6-e6e0a8d7c480 end request
+
+INFO:root:request id c45d15f4-925e-401e-a14a-345c30988933 start request with method GET path /food/5/ body b''
+INFO:root:request id c45d15f4-925e-401e-a14a-345c30988933 end request
+
+INFO:root:request id d85875a2-0a8d-48e0-9513-3b82b17d008d start request with method GET path /food/5/ body b''
+INFO:root:request id d85875a2-0a8d-48e0-9513-3b82b17d008d end request
+
+INFO:root:request id 0d571f4d-4268-4d9d-935e-07b61d46335b start request with method GET path /food/5/ body b''
+INFO:root:request id 0d571f4d-4268-4d9d-935e-07b61d46335b end request
+
+INFO:root:request id 0be74716-9de1-4835-b920-bff92627e006 start request with method GET path /food/5/ body b''
+INFO:root:request id 0be74716-9de1-4835-b920-bff92627e006 end request
+
+INFO:root:request id c7f96dab-edd2-477d-bca4-2d9b15c6f43f start request with method GET path /food/5/ body b''
+INFO:root:request id c7f96dab-edd2-477d-bca4-2d9b15c6f43f end request
+
+INFO:root:request id 0167ea0c-e8dc-4829-80ab-4513414abd13 start request with method GET path /food/5/ body b''
+INFO:root:request id 0167ea0c-e8dc-4829-80ab-4513414abd13 end request
+
+INFO:root:request id 56a089a9-6b69-4c2d-8abc-d5ccf48a950d start request with method GET path /food/5/ body b''
+INFO:root:request id 56a089a9-6b69-4c2d-8abc-d5ccf48a950d end request
+
+INFO:root:request id 89bf8f55-802d-46ea-89e7-7b4915f8411e start request with method GET path /food/5/ body b''
+INFO:root:request id 89bf8f55-802d-46ea-89e7-7b4915f8411e end request
+
+INFO:root:request id 7076199e-5476-414d-9ca6-ca7b92b2e495 start request with method GET path /food/5/ body b''
+INFO:root:request id 7076199e-5476-414d-9ca6-ca7b92b2e495 end request
+
+INFO:root:request id 50622a17-c0c7-414b-9e3d-76f0a9325896 start request with method GET path /food/5/ body b''
+INFO:root:request id 50622a17-c0c7-414b-9e3d-76f0a9325896 end request
+
+INFO:root:request id 704629cd-ade9-4c53-9369-6a776ddc1bc6 start request with method GET path /food/5/ body b''
+INFO:root:request id 704629cd-ade9-4c53-9369-6a776ddc1bc6 end request
+
+INFO:root:request id b83e0830-b0d1-48cb-b259-d1006824ac2f start request with method GET path /food/5/ body b''
+INFO:root:request id b83e0830-b0d1-48cb-b259-d1006824ac2f end request
+
+INFO:root:request id 13ad51cb-8077-4c10-90ee-71d86789b53e start request with method GET path /food/5/ body b''
+INFO:root:request id 13ad51cb-8077-4c10-90ee-71d86789b53e end request
+
+INFO:root:request id 79dfa248-c64c-4241-aefe-133c0a900de5 start request with method GET path /food/5/ body b''
+INFO:root:request id 79dfa248-c64c-4241-aefe-133c0a900de5 end request
+
+INFO:root:request id 53599194-07fa-4014-99f9-fbfafedcd73f start request with method GET path /food/5/ body b''
+INFO:root:request id 8a554661-3051-49ce-be61-b2036e2c0ffe start request with method GET path /food/5/ body b''
+INFO:root:request id 53599194-07fa-4014-99f9-fbfafedcd73f end request
+
+INFO:root:request id 8a554661-3051-49ce-be61-b2036e2c0ffe end request
+
+INFO:root:request id a4a1c1cc-f33f-4754-a5bb-0d8bbb0ceb29 start request with method GET path /food/5/ body b''
+INFO:root:request id a4a1c1cc-f33f-4754-a5bb-0d8bbb0ceb29 end request
+
+INFO:root:request id dafb793e-419a-4c00-9052-0b13cdc725f6 start request with method GET path /food/5/ body b''
+INFO:root:request id dafb793e-419a-4c00-9052-0b13cdc725f6 end request
+
+INFO:root:request id f08f66ec-9434-4f6a-89cd-3ce04c28c20a start request with method GET path /food/5/ body b''
+INFO:root:request id f08f66ec-9434-4f6a-89cd-3ce04c28c20a end request
+
+INFO:root:request id ba93c6f5-b6a4-4148-a7b5-ffae40d698d1 start request with method GET path /food/5/ body b''
+INFO:root:request id ba93c6f5-b6a4-4148-a7b5-ffae40d698d1 end request
+
+INFO:root:request id cd880836-5e6f-488a-a24d-baafcc30461a start request with method GET path /food/5/ body b''
+INFO:root:request id cd880836-5e6f-488a-a24d-baafcc30461a end request
+
+INFO:root:request id 698d12ef-615a-4425-9311-93ece892f703 start request with method GET path /food/5/ body b''
+INFO:root:request id 39d81d48-5c92-4828-9627-27502eee353d start request with method GET path /food/5/ body b''
+INFO:root:request id 698d12ef-615a-4425-9311-93ece892f703 end request
+
+INFO:root:request id 39d81d48-5c92-4828-9627-27502eee353d end request
+
+INFO:root:request id 71c8ade9-358d-4b4f-9d96-ab3fda081500 start request with method GET path /food/5/ body b''
+INFO:root:request id 71c8ade9-358d-4b4f-9d96-ab3fda081500 end request
+
+INFO:root:request id d5d4b0df-0c67-4a61-9d90-066655113aa1 start request with method GET path /food/5/ body b''
+INFO:root:request id d5d4b0df-0c67-4a61-9d90-066655113aa1 end request
+
+INFO:root:request id a3abc33f-2a4c-428f-bd8f-6787584139c4 start request with method GET path /food/5/ body b''
+INFO:root:request id a3abc33f-2a4c-428f-bd8f-6787584139c4 end request
+
+INFO:root:request id 48a7c319-b9df-48c3-883f-eecc338673bf start request with method GET path /food/5/ body b''
+INFO:root:request id 48a7c319-b9df-48c3-883f-eecc338673bf end request
+
+INFO:root:request id d7f8a0c4-ddd0-4d18-97a8-d5d5b312a138 start request with method GET path /food/5/ body b''
+INFO:root:request id d7f8a0c4-ddd0-4d18-97a8-d5d5b312a138 end request
+
+INFO:root:request id 64176e9d-aa67-4bd8-9aa6-e36805bea680 start request with method GET path /food/5/ body b''
+INFO:root:request id 64176e9d-aa67-4bd8-9aa6-e36805bea680 end request
+
+INFO:root:request id c9044f71-ba93-4fa6-9c85-c858c7ffd3e1 start request with method GET path /food/5/ body b''
+INFO:root:request id c9044f71-ba93-4fa6-9c85-c858c7ffd3e1 end request
+
+INFO:root:request id 6703b2fb-d8ad-4021-86a6-f011c22ae857 start request with method GET path /food/5/ body b''
+INFO:root:request id 6703b2fb-d8ad-4021-86a6-f011c22ae857 end request
+
+INFO:root:request id 7cad0aaf-d1e5-4a7f-93bc-eb38ab8c8688 start request with method GET path /food/5/ body b''
+INFO:root:request id 7cad0aaf-d1e5-4a7f-93bc-eb38ab8c8688 end request
+
+INFO:root:request id 93162483-8d0c-4b0f-8394-27f766bb0ed9 start request with method GET path /food/5/ body b''
+INFO:root:request id 93162483-8d0c-4b0f-8394-27f766bb0ed9 end request
+
+INFO:root:request id c04e4b1f-d77f-4e27-be54-257d4243845a start request with method GET path /food/5/ body b''
+INFO:root:request id c04e4b1f-d77f-4e27-be54-257d4243845a end request
+
+INFO:root:request id 5189b16a-d58a-44dd-9e2a-a709f725bd3c start request with method GET path /food/5/ body b''
+INFO:root:request id 5189b16a-d58a-44dd-9e2a-a709f725bd3c end request
+
+INFO:root:request id bfe2516f-ff7e-4ef5-9b16-0b88391c9caf start request with method GET path /food/5/ body b''
+INFO:root:request id 41af4e73-56c6-4108-9c8c-ca8308f07f1f start request with method GET path /food/5/ body b''
+INFO:root:request id 41af4e73-56c6-4108-9c8c-ca8308f07f1f end request
+
+INFO:root:request id bfe2516f-ff7e-4ef5-9b16-0b88391c9caf end request
+
+INFO:root:request id 71de83a5-2fa0-4137-bd69-622026142b2b start request with method GET path /food/5/ body b''
+INFO:root:request id 71de83a5-2fa0-4137-bd69-622026142b2b end request
+
+INFO:root:request id e0349d0c-ee0b-4585-be70-95cb09cd3f7b start request with method GET path /food/5/ body b''
+INFO:root:request id e0349d0c-ee0b-4585-be70-95cb09cd3f7b end request
+
+INFO:root:request id cd490a55-d96c-4ea8-b012-cdca727f764a start request with method GET path /food/5/ body b''
+INFO:root:request id cd490a55-d96c-4ea8-b012-cdca727f764a end request
+
+INFO:root:request id 0c1619c8-69b4-4df4-9860-8272d30657da start request with method GET path /food/5/ body b''
+INFO:root:request id 0c1619c8-69b4-4df4-9860-8272d30657da end request
+
+INFO:root:request id 076c9964-2342-4ef8-9c23-e9ed2d233efd start request with method GET path /food/5/ body b''
+INFO:root:request id 076c9964-2342-4ef8-9c23-e9ed2d233efd end request
+
+INFO:root:request id 7197c622-d72b-4544-96af-87c2fe3ba4d2 start request with method GET path /food/5/ body b''
+INFO:root:request id 7197c622-d72b-4544-96af-87c2fe3ba4d2 end request
+
+INFO:root:request id cba204ce-8599-4acb-9904-986b35bc7099 start request with method GET path /food/5/ body b''
+INFO:root:request id cba204ce-8599-4acb-9904-986b35bc7099 end request
+
+INFO:root:request id 1c236e24-9773-4e6a-b719-825d760bb7d4 start request with method GET path /food/5/ body b''
+INFO:root:request id 1c236e24-9773-4e6a-b719-825d760bb7d4 end request
+
+INFO:root:request id 5e86bb79-be62-4bb2-91c1-1680715ab1ee start request with method GET path /food/5/ body b''
+INFO:root:request id 5e86bb79-be62-4bb2-91c1-1680715ab1ee end request
+
+INFO:root:request id 7996f94f-8c2b-4c78-853b-294ee5cb2a26 start request with method GET path /food/5/ body b''
+INFO:root:request id 7996f94f-8c2b-4c78-853b-294ee5cb2a26 end request
+
+INFO:root:request id cde140ee-66fd-4a36-8162-93b3f9ad6d7e start request with method GET path /food/5/ body b''
+INFO:root:request id cde140ee-66fd-4a36-8162-93b3f9ad6d7e end request
+
+INFO:root:request id 8251aa0b-71a2-44a1-8ad7-cd8741ef5155 start request with method GET path /food/5/ body b''
+INFO:root:request id 8251aa0b-71a2-44a1-8ad7-cd8741ef5155 end request
+
+INFO:root:request id cb119b93-2988-481a-a6f3-443d03f0dce8 start request with method GET path /food/5/ body b''
+INFO:root:request id cb119b93-2988-481a-a6f3-443d03f0dce8 end request
+
+INFO:root:request id fade9448-c3a2-49e1-a98e-4a363d6e06a1 start request with method GET path /food/5/ body b''
+INFO:root:request id fade9448-c3a2-49e1-a98e-4a363d6e06a1 end request
+
+INFO:root:request id 4003a72a-5dba-491d-88ab-3f2217d55b01 start request with method GET path /food/5/ body b''
+INFO:root:request id 4003a72a-5dba-491d-88ab-3f2217d55b01 end request
+
+INFO:root:request id a6427f80-7827-48f5-a0fe-577eaa351258 start request with method GET path /food/5/ body b''
+INFO:root:request id a6427f80-7827-48f5-a0fe-577eaa351258 end request
+
+INFO:root:request id f7ecac7d-48fe-4f17-9dfa-df4a444492af start request with method GET path /food/5/ body b''
+INFO:root:request id f7ecac7d-48fe-4f17-9dfa-df4a444492af end request
+
