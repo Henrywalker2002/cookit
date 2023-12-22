@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Colors } from "@/Theme/Variables";
 import { DetailContainer } from "@/Screens/DetailScreens";
 import { HomeContainer } from "@/Screens/Home";
+import { ProfileContainer } from "@/Screens/ProfileScreen";
 const Tab = createBottomTabNavigator();
 
 // @refresh reset
@@ -42,7 +43,7 @@ export const MainNavigator = () => {
       />
       <Tab.Screen
         name="Favorite"
-        component={HomeContainer}
+        component={DetailContainer}
         options={{
           tabBarIconStyle: { display: "none" },
           tabBarLabelPosition: "beside-icon",
@@ -50,10 +51,11 @@ export const MainNavigator = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={DetailContainer}
+        component={ProfileContainer}
         options={{
           tabBarIconStyle: { display: "none" },
           tabBarLabelPosition: "beside-icon",
+          headerShown: false
         }}
       />
     </Tab.Navigator>

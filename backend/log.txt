@@ -3830,3 +3830,23 @@ INFO:root:request id a6427f80-7827-48f5-a0fe-577eaa351258 end request
 INFO:root:request id f7ecac7d-48fe-4f17-9dfa-df4a444492af start request with method GET path /food/5/ body b''
 INFO:root:request id f7ecac7d-48fe-4f17-9dfa-df4a444492af end request
 
+INFO:django.utils.autoreload:Watching for file changes with StatReloader
+INFO:root:request id 21bc9719-46f3-457c-a0e2-19f7bc492b9f start request with method GET path / body b''
+INFO:root:request id 21bc9719-46f3-457c-a0e2-19f7bc492b9f end request
+
+INFO:root:request id 7338019a-8cc3-4847-9112-b860e21de2e7 start request with method GET path /favicon.ico body b''
+INFO:root:request id 7338019a-8cc3-4847-9112-b860e21de2e7 end request
+
+WARNING:django.request:Not Found: /favicon.ico
+INFO:root:request id d8cd00a5-9434-41e4-a912-dd9fc57d7d71 start request with method GET path /docs body b''
+INFO:root:request id d8cd00a5-9434-41e4-a912-dd9fc57d7d71 end request
+
+INFO:root:request id 23046bcd-a71a-48b2-9ced-64d25607ea64 start request with method GET path /docs/ body b''
+INFO:root:request id 23046bcd-a71a-48b2-9ced-64d25607ea64 end request
+
+INFO:root:request id 83f4f4a4-7be6-4d1b-824a-ad18356cd309 start request with method GET path /docs/?format=openapi body b''
+INFO:root:request id 83f4f4a4-7be6-4d1b-824a-ad18356cd309 end request
+
+INFO:root:request id 3c14233c-a189-49a3-b8a1-c0301da1a21b start request with method POST path /login/ body b'{\n  "email": "user@example.com",\n  "password": "string"\n}'
+INFO:root:request id 3c14233c-a189-49a3-b8a1-c0301da1a21b end request
+

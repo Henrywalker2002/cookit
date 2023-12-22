@@ -35,7 +35,9 @@ const userApi = API.injectEndpoints({
     getUser: build.query<User, string>({
       query: (id) => `users/${id}`,
     }),
+    
   }),
+  
   overrideExisting: true,
 });
 
