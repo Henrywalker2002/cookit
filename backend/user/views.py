@@ -12,6 +12,7 @@ from datetime import datetime
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from user.permission import UserPermission
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserViewSet(CustomModelViewSetBase):
     
@@ -109,6 +110,24 @@ class AuthenticationViewSet(viewsets.GenericViewSet):
             user_data = self.get_serializer(user).data 
             return Response(user_data)
         return Response({"messsage" : "wrong username or password"}, status= status.HTTP_401_UNAUTHORIZED)
+
+    @swagger_auto_schema(auto_schema= None)
+    @action(methods=['post'], detail = False, url_path ="v2/login")
+    def login_jwt(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        user = authenticate(
+            request, username=serializer.validated_data['email'], password=serializer.validated_data['password'])
+        if user:
+            if not user.is_active:
+                return Response("user is not active", status= status.HTTP_401_UNAUTHORIZED)
+            token = RefreshToken.for_user(user)
+            user_data = self.get_serializer(user).data 
+            user_data["access"] = str(token.access_token)
+            user_data["refresh"] = str(token)
+            return Response(user_data)
+        return Response({"messsage" : "wrong email or password"}, status= status.HTTP_401_UNAUTHORIZED)
 
     @action(methods=['post'], detail=False, url_path="logout")
     @swagger_auto_schema(request_body = None)
