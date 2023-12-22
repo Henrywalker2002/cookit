@@ -149,7 +149,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "rest_framework.authentication.SessionAuthentication"
+        # "rest_framework.authentication.SessionAuthentication"
     ],
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
@@ -169,9 +169,25 @@ ALLOWED_HOSTS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+SECRET_KEY = "random_some_key"
+
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
     "UPDATE_LAST_LOGIN": True,
-    "JWT_SECRET_KEY" : "random_string",
+    "SIGNING_KEY" : "random_string",
+    "ALGORITHM" : "HS256",
+    "SIGNING_KEY" : SECRET_KEY
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS' : {
+        "Bearer":{
+            'type' : "apiKey",
+            'name' : "Authorization", 
+            "in" : "header"
+        }
+    },
+    # "USE_SESSION_AUTH" : False,
+    "is_authenticated" : False
 }

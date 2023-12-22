@@ -21,6 +21,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from base.custom_middleware import get_current_user
 import requests
 
 
@@ -88,13 +89,14 @@ class FoodModelViewSet(CustomModelViewSetBase):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
+        user = get_current_user()
         if request.user.is_authenticated and instance:
             old_recent_food = RecentFood.objects.filter(
                 food=instance, user=request.user
             )
             if old_recent_food:
                 old_recent_food.first().delete()
-            RecentFood.objects.create(food=instance, user=request.user)
+            RecentFood.objects.create(food=instance, user=get_current_user())
         return Response(serializer.data)
 
     @action(methods=["get"], detail=False, url_path="get_foods_by_user")
