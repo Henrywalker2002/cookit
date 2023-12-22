@@ -14,8 +14,10 @@ router.register(r'user', UserViewSet, 'user')
 router.register('food', FoodModelViewSet, 'food')
 router.register('favorite-food', FavoriteFoodModelViewSet, 'favorite-food')
 
-schema_view = get_schema_view(openapi.Info(
-    "docs", default_version= 'v1', public = True), permission_classes= (permissions.AllowAny, ))
+schema_view = get_schema_view(
+    openapi.Info("docs", default_version= 'v2', public = True), 
+    permission_classes= (permissions.AllowAny, ), 
+    )
 
 urlpatterns = [
     path('admin/', admin.site.urls),

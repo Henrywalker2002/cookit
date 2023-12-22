@@ -1,10 +1,13 @@
 import jwt
 import traceback
+import base64
 
 from django.utils.functional import SimpleLazyObject
 from django.utils.deprecation import MiddlewareMixin
-from django.contrib.auth.models import AnonymousUser, User
+from django.contrib.auth.models import AnonymousUser
+from user.models import User
 from django.contrib.auth.middleware import get_user
+from backend.settings import SECRET_KEY
 
 
 class JWTAuthenticationMiddleware(MiddlewareMixin):
@@ -29,13 +32,13 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
             try:
                 user_jwt = jwt.decode(
                     token,
-                    "random_string",
-                    ['HS256'],
-                    verify= False
+                    SECRET_KEY, 
+                    algorithms=['HS256']
                 )
                 user_jwt = User.objects.get(
-                    id=user_jwt['data']['user']['id']
+                    id=user_jwt["user_id"]
                 )
             except Exception as e: # NoQA
-                traceback.print_exc()
+                # traceback.print_exc()
+                return user_jwt
         return user_jwt

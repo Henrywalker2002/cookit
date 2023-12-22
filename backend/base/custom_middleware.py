@@ -1,5 +1,7 @@
 import uuid
 import threading
+from backend.JWTMiddleware import JWTAuthenticationMiddleware
+from django.contrib.auth.models import AnonymousUser
 
 
 _user = threading.local()
@@ -14,8 +16,12 @@ class CustomMiddleware:
 
     def __call__(self, request):
         
-        if request.user:
+        if request.user and request.user.is_authenticated:
             _user.__setattr__('user', request.user)
+        
+        user = JWTAuthenticationMiddleware.get_jwt_user(request)
+        if user and user.is_authenticated:
+            _user.__setattr__('user', user)
 
         # id for debug logger
         id = uuid.uuid4()
