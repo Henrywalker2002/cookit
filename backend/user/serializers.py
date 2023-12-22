@@ -36,7 +36,8 @@ class UserSummarySerializer(serializers.ModelSerializer):
             fields = ["id", "full_name", "avatar"]
         
 class LoginSerializer(serializers.Serializer):
-    id = serializers.CharField(read_only= True)
+    
+    id = serializers.UUIDField(read_only = True)
     email = serializers.EmailField(max_length = 128)
     full_name = serializers.CharField(read_only = True)
     password = serializers.CharField(max_length=128, write_only=True)

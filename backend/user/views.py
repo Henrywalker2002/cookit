@@ -9,16 +9,22 @@ from rest_framework.response import Response
 from rest_framework.authentication import authenticate
 from django.contrib.auth import login, logout
 from datetime import datetime
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from user.permission import UserPermission
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserViewSet(CustomModelViewSetBase):
     
-    serializer_class = {"create" : CreateUserSerializer, "default" : UserSerializer}
+    serializer_class = {"create" : CreateUserSerializer, "create_admin" : CreateUserSerializer,  "default" : UserSerializer}
     queryset = User.objects.all() 
+    permission_classes = [UserPermission]
     
-    # def get_object(self):
-    #     if self.action == "update" or self.action == "partial_update":
-    #         return self.request.user
-    #     return super().get_object()
+    def get_object(self):
+        if self.action == "update" or self.action == "partial_update":
+            return self.request.user
+        return super().get_object()
+    
     
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data = request.data)
@@ -30,8 +36,21 @@ class UserViewSet(CustomModelViewSetBase):
         user.save()        
         return Response(data = serializer.data, status = status.HTTP_201_CREATED)
     
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object() or request.user
+    @action(methods = ['post'], detail= False, url_path="create_admin")
+    def create_admin(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data = request.data)
+        serializer.is_valid(raise_exception = True)
+        
+        serializer.save()
+        user = serializer.instance
+        user.set_password(user.password)
+        user.role = "ADMIN"
+        user.save()
+        return Response(data = serializer.data, status = status.HTTP_201_CREATED)
+    
+    @swagger_auto_schema(manual_parameters= [openapi.Parameter("id", openapi.IN_QUERY, type = openapi.TYPE_INTEGER)])
+    def update(self, request, *args, **kwargs,):
+        instance = request.user
         partial = kwargs.pop('partial', False)
         serializer = self.get_serializer(instance, data = request.data, partial = partial)
         serializer.is_valid(raise_exception = True)
@@ -92,7 +111,26 @@ class AuthenticationViewSet(viewsets.GenericViewSet):
             return Response(user_data)
         return Response({"messsage" : "wrong username or password"}, status= status.HTTP_401_UNAUTHORIZED)
 
+    @swagger_auto_schema(auto_schema= None)
+    @action(methods=['post'], detail = False, url_path ="v2/login")
+    def login_jwt(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        user = authenticate(
+            request, username=serializer.validated_data['email'], password=serializer.validated_data['password'])
+        if user:
+            if not user.is_active:
+                return Response("user is not active", status= status.HTTP_401_UNAUTHORIZED)
+            token = RefreshToken.for_user(user)
+            user_data = self.get_serializer(user).data 
+            user_data["access"] = str(token.access_token)
+            user_data["refresh"] = str(token)
+            return Response(user_data)
+        return Response({"messsage" : "wrong email or password"}, status= status.HTTP_401_UNAUTHORIZED)
+
     @action(methods=['post'], detail=False, url_path="logout")
+    @swagger_auto_schema(request_body = None)
     def logout(self, request):
         logout(request)
         return Response(status=status.HTTP_204_NO_CONTENT)

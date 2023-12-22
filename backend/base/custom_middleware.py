@@ -1,8 +1,8 @@
 import uuid
-import logging
 import threading
+from backend.JWTMiddleware import JWTAuthenticationMiddleware
+from django.contrib.auth.models import AnonymousUser
 
-logging.basicConfig(filename="log.txt", level=logging.INFO)
 
 _user = threading.local()
 
@@ -16,16 +16,17 @@ class CustomMiddleware:
 
     def __call__(self, request):
         
-        if request.user:
+        if request.user and request.user.is_authenticated:
             _user.__setattr__('user', request.user)
+        
+        user = JWTAuthenticationMiddleware.get_jwt_user(request)
+        if user and user.is_authenticated:
+            _user.__setattr__('user', user)
 
         # id for debug logger
         id = uuid.uuid4()
         _user.__setattr__('request_id', id)
-        logging.info(
-            f'request id {str(id)} start request with method {request.method} path {request.get_full_path()} body {request.body}')
         response = self.get_response(request)
-        logging.info(f'request id {str(id)} end request\n')
         return response
 
 

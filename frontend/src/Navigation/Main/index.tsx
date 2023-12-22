@@ -1,61 +1,71 @@
 import React from "react";
-import {StyleSheet, View, Text, StatusBar} from "react-native"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import { Colors } from "@/Theme/Variables";
-import { DetailContainer } from "@/Screens/DetailScreens";
 import { HomeContainer } from "@/Screens/Home";
-import { ProfileContainer } from "@/Screens/ProfileScreen";
+import Search from "@/Screens/Search/Search";
+import { AntDesign, Foundation, MaterialIcons } from "@expo/vector-icons";
+import { Plan } from "@/Screens/Plan";
+import { Favorite } from "@/Screens/Favorite";
+import { Profile } from "@/Screens/Profile";
+
 const Tab = createBottomTabNavigator();
 
 // @refresh reset
 export const MainNavigator = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        tabBarActiveTintColor: "#FF6464",
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={HomeContainer}
         options={{
-          tabBarIcon: () => (
-            <View >
-              
-            </View>
-            
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color }) => (
+            <Foundation name="home" size={24} color={color} />
           ),
-          tabBarLabelPosition: "beside-icon",
         }}
       />
       <Tab.Screen
         name="Search"
-        component={HomeContainer}
+        component={Search}
         options={{
-          tabBarIconStyle: { display: "none" },
-          tabBarLabelPosition: "beside-icon",
+          tabBarLabel: "Search",
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="search1" size={24} color={color} />
+          ),
         }}
       />
       <Tab.Screen
         name="Plan"
-        component={HomeContainer}
+        component={Plan}
         options={{
-          tabBarIconStyle: { display: "none" },
-          tabBarLabelPosition: "beside-icon",
+          tabBarLabel: "Plan",
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="menu-open" size={24} color={color} />
+          ),
         }}
       />
       <Tab.Screen
         name="Favorite"
-        component={DetailContainer}
+        component={Favorite}
         options={{
-          tabBarIconStyle: { display: "none" },
-          tabBarLabelPosition: "beside-icon",
+          tabBarLabel: "Favorite",
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="favorite-border" size={24} color={color} />
+          ),
         }}
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileContainer}
+        component={Profile}
         options={{
-          tabBarIconStyle: { display: "none" },
-          tabBarLabelPosition: "beside-icon",
-          headerShown: false
+          tabBarLabel: "Profile",
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="user" size={24} color={color} />
+          ),
         }}
       />
     </Tab.Navigator>

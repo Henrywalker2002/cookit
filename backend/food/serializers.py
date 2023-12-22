@@ -79,3 +79,9 @@ class FoodFeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Food
         fields = ["feedbacks"]
+        
+
+class FoodSearchByImageSerializer(serializers.Serializer):
+    image = serializers.ImageField()
+    class Meta:
+        fields = ["image"]
