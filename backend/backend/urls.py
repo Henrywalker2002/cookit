@@ -23,5 +23,6 @@ urlpatterns = [
     path('docs/', schema_view.with_ui()), 
     path('login/', AuthenticationViewSet.as_view({'post': 'login'})),
     path('logout/', AuthenticationViewSet.as_view({'post': 'logout'})),
+    path("v2/login/", AuthenticationViewSet.as_view({'post' : "login_jwt"})),
     path('', include(router.urls))
 ]
