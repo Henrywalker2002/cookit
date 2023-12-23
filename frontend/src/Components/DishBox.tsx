@@ -3,15 +3,19 @@ import { Image, Pressable, TouchableOpacity } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Box, AspectRatio, Stack, Heading, Text, HStack } from "native-base";
 interface DishBoxProps {
-  start?: Number;
-  dishName?: String;
-  ingredients?: String[];
-  duration?: Number;
-  kcal?: Number;
-  imgUri?: string;
-  onPress?: VoidFunction;
+  food: {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+    time_taken: any;
+    avg_rating: any;
+  };
+  navigation: any;
+  index?: number;
 }
 const DishBox = (props: DishBoxProps) => {
+  const {food, navigation, index} = props;
   return (
     <Box
       maxW="49%"
@@ -33,13 +37,15 @@ const DishBox = (props: DishBoxProps) => {
         backgroundColor: "gray.50",
       }}
     >
-      <TouchableOpacity onPress={() => alert("Your press a dishBox")}>
+      <TouchableOpacity onPress={() =>navigation.navigate("Detail", {
+                    food_id: food.id,
+                  })}>
         <Box>
           <AspectRatio w="100%" ratio={16 / 9}>
             <Image
               source={
-                props.imgUri
-                  ? { uri: props.imgUri }
+                food.image
+                  ? { uri: food.image }
                   : {
                       uri: "https://www.theyearinpictures.co.uk/images//image-placeholder.png",
                     }
@@ -49,26 +55,11 @@ const DishBox = (props: DishBoxProps) => {
           </AspectRatio>
         </Box>
         <Stack p="4" space={3}>
-          <Stack space={2}>
-            <Heading size="md" ml="-1">
-              {props.dishName || "A dish name"}
-            </Heading>
-            <Text
-              fontSize="xs"
-              _light={{
-                color: "violet.500",
-              }}
-              _dark={{
-                color: "violet.400",
-              }}
-              fontWeight="500"
-              ml="-0.5"
-              mt="-1"
-            >
-              {props.ingredients?.map((ingr) => (
-                <Text> {ingr}</Text>
-              ))}
+          <Stack space={1}>
+            <Text>
+              {food.name || "A dish name"}
             </Text>
+
           </Stack>
 
           <HStack alignItems="center" space={4} justifyContent="center">
@@ -81,7 +72,7 @@ const DishBox = (props: DishBoxProps) => {
                 }}
                 fontWeight="400"
               >
-                {props.duration ? String(props.duration) : "?"} min
+                {food.time_taken ? String(food.time_taken) : "?"} min
               </Text>
             </HStack>
             <HStack alignItems="center">
@@ -93,7 +84,7 @@ const DishBox = (props: DishBoxProps) => {
                 }}
                 fontWeight="400"
               >
-                {props.kcal ? String(props.kcal) : "?"} kcal
+                {food ? String(450) : "?"} kcal
               </Text>
             </HStack>
           </HStack>

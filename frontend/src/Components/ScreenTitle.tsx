@@ -8,7 +8,7 @@ interface ScreenTitleProp {
 const ScreenTitle = (props: ScreenTitleProp) => {
   return (
     <>
-      <Flex direction="row" alignItems={"center"} justify="space-around">
+      <Flex direction="row" alignItems={"center"} justify="space-between">
         <TouchableOpacity onPress={() => alert("You pressed button")}>
           <Image source={tab} />
         </TouchableOpacity>

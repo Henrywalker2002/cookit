@@ -18,9 +18,11 @@ import {
 } from "react-native";
 import { Rating, AirbnbRating } from "react-native-elements";
 import { RootScreens } from "..";
+import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
-export const DetailContainer = ({ navigation }) => {
-  const food_id = 5;
+import { useAppSelector } from "@/Hooks/redux";
+export const DetailContainer = ({ route,navigation }) => {
+  const { food_id } = route.params;
   const [detail, setDetail] = useState({
     id: 0,
     name: "",
@@ -56,17 +58,14 @@ export const DetailContainer = ({ navigation }) => {
   };
 
   const handleSubmit = () => {};
+  const token = useAppSelector((state) => state.user.token);
   const fetchDetail = async () => {
     try {
       await axios
-        .get(`http://103.77.214.189:8000/food/5/`, {
-          withCredentials: true,
+        .get(`http://103.77.214.189:8000/food/${food_id}/`, {
           headers: {
             accept: "application/json",
-            "X-CSRFToken":
-              "qVAqd295uZlJp78iO9UjT3HMaii3PCbVV3zGzi18qUnTfxYmCy4Wb2P480R0BU88",
-            Cookie:
-              "sessionid=dinch9dn99dlcqrcm07qhyb30x0yqv6k; csrftoken=LUBSNIyPQDejOE1KUXDprA0GTcpAFM90",
+            Authorization: "Bearer " + token,
           },
         })
         .then((res) => {
@@ -87,230 +86,282 @@ export const DetailContainer = ({ navigation }) => {
   useEffect(() => {
     fetchDetail();
   });
-  return loading ? (
-    <HStack space={2} justifyContent="center">
-      <Spinner accessibilityLabel="Loading posts" />
-      <Heading color="primary.500" fontSize="md">
-        {i18n.t(LocalizationKey.LOADING)}
-      </Heading>
-    </HStack>
-  ) : (
-    <ScrollView style={styles.scrollView}>
-      <View style={{ paddingHorizontal: 15 }}>
-        <View
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+      }}
+    >
+      <View
+        style={{
+          width: "100%",
+          height: "6%",
+        }}
+      ></View>
+      <View>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
           style={{
-            alignItems: 'center'
+            padding: 3,
+            backgroundColor: "#FFFFFF",
+            borderRadius: 10,
+            width: "10%",
+            margin: 5,
+            elevation: 8,
           }}
         >
-          <Image
-            style={{
-              width: "100%",
-              height: 150,
-              borderRadius: 5,
-            }}
-            source={{
-              uri: detail.image,
-            }}
-          />
-        </View>
-        <View
-          style={{
-            padding: 5,
-            borderBottomColor: "black",
-            borderBottomWidth: StyleSheet.hairlineWidth,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {detail.name}
-          </Text>
-        </View>
-
-        <View>
-          <Rating
-            type="star"
-            imageSize={20}
-            defaultRating={detail.avg_rating}
-            style={{ paddingVertical: 10 }}
-            readonly={true}
-          />
-          <Button
-            title="Go to Review Screen"
-            onPress={() => navigation.navigate("Review", {
-              food_id: food_id
-            })}
-          />
-        </View>
-        <View
-          style={{
-            padding: 5,
-            borderBottomColor: "black",
-            borderBottomWidth: StyleSheet.hairlineWidth,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            Description
-          </Text>
-          <Text>{detail.description}</Text>
-        </View>
-
-        <View
-          style={{
-            padding: 5,
-            borderBottomColor: "black",
-            borderBottomWidth: StyleSheet.hairlineWidth,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            Ingredients
-          </Text>
-          {detail.ingredients?.map((ingredient) => {
-            return <Text>{ingredient.original}</Text>;
-          })}
-        </View>
-        <View
-          style={{
-            padding: 5,
-            borderBottomColor: "black",
-            borderBottomWidth: StyleSheet.hairlineWidth,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            Steps
-          </Text>
-          {detail.instructions?.map((item) => {
-            return <Text>{`${item.number} - ${item.step}`}</Text>;
-          })}
-        </View>
-
-        <View
-          style={{
-            padding: 5,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            Nutrition Facts
-          </Text>
-          {detail.nutrients?.map((item) => {
-            return (
-              <View
+          <AntDesign name="left" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+      {loading ? (
+        <HStack space={2} justifyContent="center">
+          <Spinner accessibilityLabel="Loading posts" />
+          <Heading color="primary.500" fontSize="md">
+            {i18n.t(LocalizationKey.LOADING)}
+          </Heading>
+        </HStack>
+      ) : (
+        <ScrollView style={styles.scrollView}>
+          <View style={{ paddingHorizontal: 15 }}>
+            <View
+              style={{
+                alignItems: "center",
+              }}
+            >
+              <Image
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  padding: 5,
-                  borderBottomColor: "black",
-                  borderBottomWidth: StyleSheet.hairlineWidth,
+                  width: "100%",
+                  height: 150,
+                  borderRadius: 5,
+                }}
+                source={{
+                  uri: detail.image,
+                }}
+              />
+            </View>
+            <View
+              style={{
+                padding: 5,
+                borderBottomColor: "black",
+                borderBottomWidth: StyleSheet.hairlineWidth,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  color: "orange",
                 }}
               >
-                <Text> {item.name}</Text>
-                <Text> {`${item.amount} ${item.unit}`}</Text>
-              </View>
-            );
-          })}
-        </View>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 5,
-            margin: 5,
-          }}
-        >
-          <Button title="Feedback" onPress={displayForm} />
-          <Modal
-            visible={showForm}
-            animationType="fade"
-            transparent={false}
-            onRequestClose={closeForm}
-          >
+                {" "}
+                {detail.name}
+              </Text>
+            </View>
+
+            <View>
+              <Rating
+                type="star"
+                imageSize={20}
+                defaultRating={detail.avg_rating}
+                style={{ paddingVertical: 10 }}
+                readonly={true}
+              />
+              <Button
+                title="Go to Review Screen"
+                onPress={() =>
+                  navigation.navigate("Review", {
+                    food_id: food_id,
+                  })
+                }
+              />
+            </View>
+            <View
+              style={{
+                padding: 5,
+                borderBottomColor: "black",
+                borderBottomWidth: StyleSheet.hairlineWidth,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "bold",
+                }}
+              >
+                {" "}
+                Description
+              </Text>
+              <Text>{detail.description}</Text>
+            </View>
+
+            <View
+              style={{
+                padding: 5,
+                borderBottomColor: "black",
+                borderBottomWidth: StyleSheet.hairlineWidth,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "bold",
+                }}
+              >
+                {" "}
+                Ingredients
+              </Text>
+              {detail.ingredients?.map((ingredient) => {
+                return <Text>{ingredient.original}</Text>;
+              })}
+            </View>
+            <View
+              style={{
+                padding: 5,
+                borderBottomColor: "black",
+                borderBottomWidth: StyleSheet.hairlineWidth,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "bold",
+                }}
+              >
+                {" "}
+                Steps
+              </Text>
+              {detail.instructions?.map((item) => {
+                return <Text>{`${item.number} - ${item.step}`}</Text>;
+              })}
+            </View>
+
+            <View
+              style={{
+                padding: 5,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "bold",
+                }}
+              >
+                {" "}
+                Nutrition Facts
+              </Text>
+              {detail.nutrients?.map((item) => {
+                return (
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      padding: 5,
+                      borderBottomColor: "black",
+                      borderBottomWidth: StyleSheet.hairlineWidth,
+                    }}
+                  >
+                    <Text> {item.name}</Text>
+                    <Text> {`${item.amount} ${item.unit}`}</Text>
+                  </View>
+                );
+              })}
+            </View>
             <View
               style={{
                 flex: 1,
                 alignItems: "center",
                 justifyContent: "center",
+                padding: 5,
+                margin: 5,
               }}
             >
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                }}
+              <Button title="Feedback" onPress={displayForm} />
+              <Modal
+                visible={showForm}
+                animationType="slide"
+                transparent={true}
+                onRequestClose={closeForm}
               >
-                {" "}
-                Send your feedback
-              </Text>
-              <AirbnbRating
-                count={5}
-                reviews={["Terrible", "Bad", "OK", "Good", "Excellent"]}
-                defaultRating={0}
-                size={20}
-                showRating
-                onFinishRating={handleRating}
-              />
-              <TextInput
-                style={{
-                  width: 300,
-                  borderColor: "gray",
-                  borderWidth: 1,
-                  marginBottom: 20,
-                  marginTop: 10,
-                  paddingHorizontal: 10,
-                }}
-                multiline
-                numberOfLines={4}
-                maxLength={40}
-                placeholder="Enter your feedback"
-                onChangeText={handleTextChange}
-                value={text}
-              />
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: "white",
+                      padding: 20,
+                      borderRadius: 10,
+                      alignItems: "center",
+                      elevation: 5,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {" "}
+                      Send your feedback
+                    </Text>
+                    <AirbnbRating
+                      count={5}
+                      reviews={["Terrible", "Bad", "OK", "Good", "Excellent"]}
+                      defaultRating={0}
+                      size={20}
+                      showRating
+                      onFinishRating={handleRating}
+                    />
+                    <TextInput
+                      style={{
+                        width: 300,
+                        borderColor: "gray",
+                        borderWidth: 1,
+                        marginBottom: 20,
+                        marginTop: 10,
+                        paddingHorizontal: 10,
+                      }}
+                      multiline
+                      numberOfLines={4}
+                      maxLength={40}
+                      placeholder="Enter your feedback"
+                      onChangeText={handleTextChange}
+                      value={text}
+                    />
 
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  width: "80%",
-                }}
-              >
-                <Button title="Cancel" onPress={closeForm} />
-                <Button title="Send" onPress={handleSubmit} />
-              </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        width: "80%",
+                      }}
+                    >
+                      <Button
+                        title="Cancel"
+                        onPress={closeForm}
+                        color="#FE724C"
+                      />
+                      <Button
+                        title="Send"
+                        onPress={handleSubmit}
+                        color="#FE724C"
+                      />
+                    </View>
+                  </View>
+                </View>
+              </Modal>
             </View>
-          </Modal>
-        </View>
-      </View>
-    </ScrollView>
+          </View>
+        </ScrollView>
+      )}
+    </View>
   );
 };
 

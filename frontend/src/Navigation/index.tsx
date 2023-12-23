@@ -9,6 +9,8 @@ import { OnBoardingContainer2 } from "../Screens/OnBoarding2/OnBoardingContainer
 import { OnBoardingContainer3 } from "../Screens/OnBoarding3/OnBoardingContainer3";
 import { RootScreens } from "@/Screens";
 import { ReviewContainer } from "@/Screens/ReviewScreens";
+import { DetailContainer } from "@/Screens/DetailScreens";
+import { AuthNavigator } from "./Auth";
 export type RootStackParamList = {
   [RootScreens.MAIN]: undefined;
   [RootScreens.WELCOME]: undefined;
@@ -17,6 +19,7 @@ export type RootStackParamList = {
   [RootScreens.ONBOARDING3] : undefined;
   [RootScreens.DETAIL]: undefined;
   [RootScreens.REVIEW]: undefined;
+  [RootScreens.AUTH]: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -51,9 +54,21 @@ const ApplicationNavigator = () => {
           component={MainNavigator}
           options={{}}
         />
+
+        <RootStack.Screen
+          name={RootScreens.AUTH}
+          component={AuthNavigator}
+          options={{}}
+        />
+
         <RootStack.Screen
           name={RootScreens.REVIEW}
           component={ReviewContainer}
+          options={{}}
+        />
+        <RootStack.Screen
+          name={RootScreens.DETAIL}
+          component={DetailContainer}
           options={{}}
         />
       </RootStack.Navigator>

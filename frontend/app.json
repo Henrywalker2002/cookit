@@ -11,11 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-
     "assetBundlePatterns": [
       "**/*"
     ],
-
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.hpcc.expo-redux-template"
@@ -26,13 +24,14 @@
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.ACCESS_BACKGROUND_LOCATION",
-        "INTERNET"
+        "android.permission.INTERNET",
+        "android.permission.RECORD_AUDIO"
       ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": ""
+      "package": "com.nttuna2002.exporeduxtemplate"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -46,6 +45,9 @@
       ]
     ],
     "extra": {
+      "eas": {
+        "projectId": "b42e3099-5381-4d34-b5f3-d9ca13d1400f"
+      }
     },
     "runtimeVersion": {
       "policy": "sdkVersion"

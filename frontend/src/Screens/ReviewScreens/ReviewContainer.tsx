@@ -40,7 +40,7 @@ export const ReviewContainer = ({ route, navigation }) => {
 
   const closeForm = () => {
     setShowForm(false);
-    // You can add logic here to handle form submission or closing actions
+    //add logic here to handle form submission or closing actions
   };
 
   const handleSubmit = () => {};

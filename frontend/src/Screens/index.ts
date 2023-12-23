@@ -5,5 +5,6 @@ export enum RootScreens {
   ONBOARDING2 = "Onboarding2",
   ONBOARDING3 = "Onboarding3",
   DETAIL = "Detail",
-  REVIEW = "Review"
+  REVIEW = "Review",
+  AUTH = "Auth",
 }

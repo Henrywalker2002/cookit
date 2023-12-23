@@ -16,7 +16,7 @@ const OnboardingScreen= (props: {
         <Text style={styles.text}>Help you gain, lose or maintain your healthful weight</Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => props.onNavigate(RootScreens.MAIN)}
+          onPress={() => props.onNavigate(RootScreens.AUTH)}
         >
           <Text style={styles.buttonText}>Start Cooking</Text>
         </TouchableOpacity>
