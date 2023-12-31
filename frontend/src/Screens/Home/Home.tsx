@@ -23,6 +23,7 @@ export interface IHomeProps {
 export const Home = (props: IHomeProps) => {
   const { data, navigation } = props;
   const token = useAppSelector((state) => state.user.token);
+  const recent_food = useAppSelector((state) => state.user.recendFood);
   const [loading, setLoading] = useState(true);
   const [foodList, setFoodList] = useState({
     count: 0,
@@ -90,8 +91,8 @@ export const Home = (props: IHomeProps) => {
           wrap="wrap"
           alignContent={"space-around"}
         >
-          {hold.map((ele) => (
-            <DishBox />
+          {recent_food.map((item,idx) => (
+            <DishBox navigation={navigation} food={item} index={idx} />
           ))}
         </Flex>
       </>
@@ -102,6 +103,7 @@ export const Home = (props: IHomeProps) => {
     <Flex style={styles.container}>
       <ScreenTitle title="Dashboard" />
       <ScrollView>
+        {/* Recommended food */}
         <Flex
           direction="row"
           justify="space-between"
@@ -137,15 +139,8 @@ export const Home = (props: IHomeProps) => {
             })}
           </Flex>
         )}
-
-        <Flex
-          direction="row"
-          style={{ gap: 3 }}
-          justify="center"
-          wrap="wrap"
-          alignContent={"space-around"}
-        ></Flex>
-        {/* {section("Recent recipes")} */}
+        {/* Recent food  */}
+        {section("Recent recipes")}
       </ScrollView>
 
       <StatusBar />

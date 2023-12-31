@@ -9,7 +9,7 @@ interface IUserState {
     } ;
     token: string ;
     isUsedApp: boolean;
-    recendFood: []
+    recendFood: any[]
 }
 
 
@@ -50,8 +50,9 @@ const slice = createSlice({
         UPDATEUSER: (state, { payload: { user} }) => {
             state.user = user
         },
-        UPDATE_RECENT: (state, { payload: { recendFood } }) => {
-
+        UPDATE_RECENT: (state, { payload: { recend_food } }) => {
+            state.recendFood = state.recendFood.filter(s => s.id !== recend_food.id);
+            state.recendFood = [recend_food, ...state.recendFood];
         },
         CLEAR_RECENT: (state, { payload: { } }) => {
             state.recendFood = []

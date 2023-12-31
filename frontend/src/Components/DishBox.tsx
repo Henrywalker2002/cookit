@@ -1,7 +1,22 @@
-import React from "react";
-import { Image, Pressable, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  Image,
+  Pressable,
+  TouchableOpacity,
+  View,
+  Alert,
+  Modal,
+} from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Box, AspectRatio, Stack, Heading, Text, HStack } from "native-base";
+import {
+  Box,
+  AspectRatio,
+  Stack,
+  Heading,
+  Text,
+  HStack,
+  Spinner,
+} from "native-base";
 interface DishBoxProps {
   food: {
     id: number;
@@ -14,15 +29,69 @@ interface DishBoxProps {
   navigation: any;
   index?: number;
 }
+import { AntDesign } from "@expo/vector-icons";
+import axios from "axios";
+import { useAppDispatch, useAppSelector } from "@/Hooks/redux";
+import { LocalizationKey, i18n } from "@/Localization";
+import { UPDATE_RECENT } from "@/Store/reducers";
+import LoadingModal from "./CustomModal/LoadingModal";
+import SuccessModal from "./CustomModal/SuccessModal";
+
 const DishBox = (props: DishBoxProps) => {
-  const {food, navigation, index} = props;
+  const { food, navigation, index } = props;
+  const dispatch = useAppDispatch();
+  const token = useAppSelector((state) => state.user.token);
+  const [loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  
+  const handleAddToFavorite = async () => {
+    console.log("TOken: ", token);
+    await axios
+      .post(
+        `http://103.77.214.189:8000/favorite-food/`,
+        {
+          food: food.id,
+        },
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: "Bearer " + token,
+          }
+        }
+      )
+      .then((res) => {
+        setModalVisible(true);
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 5000);
+      })
+      .catch(function (error) {
+        console.log(error);
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          if (error.response.status == 400) {
+            Alert.alert("Note", error.response.data.message, [
+              { text: "OK", style: "cancel" },
+            ]);
+          } else {
+            Alert.alert("Note", "Something went wrong. Please try again.", [
+              { text: "OK", style: "cancel" },
+            ]);
+          }
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
   return (
     <Box
       maxW="49%"
       rounded="lg"
       overflow="hidden"
       borderColor="coolGray.200"
-      borderRadius={30}
+      borderRadius={20}
       borderWidth="1"
       alignContent={"center"}
       _dark={{
@@ -37,9 +106,14 @@ const DishBox = (props: DishBoxProps) => {
         backgroundColor: "gray.50",
       }}
     >
-      <TouchableOpacity onPress={() =>navigation.navigate("Detail", {
-                    food_id: food.id,
-                  })}>
+      <TouchableOpacity
+        onPress={() =>{
+          dispatch(UPDATE_RECENT(food))
+          return navigation.navigate("Detail", {
+            food_id: food.id,
+          })}
+        }
+      >
         <Box>
           <AspectRatio w="100%" ratio={16 / 9}>
             <Image
@@ -56,10 +130,14 @@ const DishBox = (props: DishBoxProps) => {
         </Box>
         <Stack p="4" space={3}>
           <Stack space={1}>
-            <Text>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: "bold",
+              }}
+            >
               {food.name || "A dish name"}
             </Text>
-
           </Stack>
 
           <HStack alignItems="center" space={4} justifyContent="center">
@@ -90,6 +168,48 @@ const DishBox = (props: DishBoxProps) => {
           </HStack>
         </Stack>
       </TouchableOpacity>
+      <View
+        style={{
+          position: "absolute",
+          top: 5,
+          left: 5,
+          padding: 2,
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          backgroundColor: "rgba(255,255,255,0.75)",
+          alignItems: "center",
+          borderRadius: 10,
+        }}
+      >
+        <Text style={{ fontWeight: "bold", fontSize: 15, marginRight: 5 }}>
+          {food.avg_rating}
+        </Text>
+        <AntDesign name="star" size={24} color="#FFC529" />
+      </View>
+
+      <TouchableOpacity
+        onPress={() => {
+          setLoading(true);
+          handleAddToFavorite();
+        }}
+        style={{
+          position: "absolute",
+          top: 5,
+          right: 5,
+          padding: 2,
+          backgroundColor: "rgba(255,255,255,0.75)",
+          borderRadius: 10,
+        }}
+      >
+        <Ionicons name="heart-circle" size={24} color="#FE724C" />
+      </TouchableOpacity>
+
+      <LoadingModal visible={loading}/>
+      <SuccessModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
     </Box>
   );
 };

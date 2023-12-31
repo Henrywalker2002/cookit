@@ -20,7 +20,18 @@ export const ProfileContainer = () => {
 
   const token = useAppSelector(state => state.user.token);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    id: '',
+    email: '',
+    full_name: '',
+    gender: '',
+    day_of_birth: '',
+    height: 0,
+    weight: 0,
+    activity_level: '',
+    tdee: 0,
+    avatar: ''
+  });
   const [gender, setGender] = useState(""); // State to store selected gender
   const [showForm, setShowForm] = useState(false);
 
@@ -33,7 +44,7 @@ export const ProfileContainer = () => {
     fetchUser();
   };
 
-  const handleGenderChange = (itemValue) => {
+  const handleGenderChange = (itemValue: React.SetStateAction<string>) => {
     setGender(itemValue);
   };
   const user_id = useAppSelector(state => state.user.user.id);
@@ -43,10 +54,6 @@ export const ProfileContainer = () => {
         headers: {
           accept: "application/json",
           Authorization: "Bearer " + token
-          // "X-CSRFToken":
-          //   "qVAqd295uZlJp78iO9UjT3HMaii3PCbVV3zGzi18qUnTfxYmCy4Wb2P480R0BU88",
-          // Cookie:
-          //   "sessionid=dinch9dn99dlcqrcm07qhyb30x0yqv6k; csrftoken=LUBSNIyPQDejOE1KUXDprA0GTcpAFM90",
         },
       })
       .then((res) => {

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import { Button, Pressable, Text, View } from "native-base";
-import { Alert, StyleSheet, TouchableOpacity } from "react-native";
+import { Button, HStack, Heading, Pressable, Spinner, Text, View } from "native-base";
+import { Alert, Modal, StyleSheet, TouchableOpacity } from "react-native";
 import { AuthStackParamList } from "@/Navigation/Auth";
 import { RootStackParamList } from "@/Navigation";
 import { RootScreens } from "..";
@@ -12,6 +12,7 @@ import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/Hooks/redux";
 import { LOGIN } from "@/Store/reducers";
+import { LocalizationKey, i18n } from "@/Localization";
 
 type AuthScreenNavigatorProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -66,6 +67,9 @@ export const Login = ({ navigation }: LoginScreenProps) => {
         }
       }
     })
+    .finally(() => {
+      setLoading(false);
+    });
   }
 
   return (
@@ -126,7 +130,10 @@ export const Login = ({ navigation }: LoginScreenProps) => {
         </View>
 
         <View style={{ alignItems: "center" }}>
-          <TouchableOpacity>
+          <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(RootScreens.MAIN)
+          }}>
             <Text
               style={{
                 color: "#FE724C",
@@ -137,7 +144,10 @@ export const Login = ({ navigation }: LoginScreenProps) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={handleSubmit}
+            onPress={() => {
+              setLoading(true);
+              handleSubmit();
+            }}
             style={{
               minWidth: "45%",
               backgroundColor: "#FE724C",
@@ -225,6 +235,25 @@ export const Login = ({ navigation }: LoginScreenProps) => {
           </Button>
         </View>
       </View>
+      <Modal visible={loading} transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            width: "100%",
+            height: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <HStack space={2} justifyContent="center">
+            <Spinner accessibilityLabel="Loading posts" />
+            <Heading color="primary.500" fontSize="lg">
+              {i18n.t(LocalizationKey.LOADING)}
+            </Heading>
+          </HStack>
+        </View>
+      </Modal>
     </View>
   );
 };

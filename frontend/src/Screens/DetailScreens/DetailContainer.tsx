@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Detail } from "./Detail";
 import { HStack, Spinner, Heading } from "native-base";
 import { i18n, LocalizationKey } from "@/Localization";
 import {
   Button,
-  SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   View,
@@ -16,21 +13,37 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { Rating, AirbnbRating } from "react-native-elements";
-import { RootScreens } from "..";
 import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 import { useAppSelector } from "@/Hooks/redux";
-export const DetailContainer = ({ route,navigation }) => {
+import LoadingModal from "@/Components/CustomModal/LoadingModal";
+import SuccessModal from "@/Components/CustomModal/SuccessModal";
+import { useFocusEffect } from "@react-navigation/native";
+
+export interface IDetail{
+  route: any;
+  navigation: any;
+}
+
+export const DetailContainer = ({ route, navigation }: IDetail) => {
   const { food_id } = route.params;
+  // const food_id = 5;
   const [detail, setDetail] = useState({
     id: 0,
     name: "",
     description: "",
     image: "https://spoonacular.com/recipeImages/640803-556x370.jpg",
-    ingredients: [],
-    instructions: [],
-    nutrients: [],
+    ingredients: [{original: ''}],
+    instructions: [{
+      step: ''
+    }],
+    nutrients: [{
+      name: '',
+      amount: 0.0,
+      unit: ''
+    }],
     calories: 0,
     time_taken: 0,
     avg_rating: 0,
@@ -39,12 +52,13 @@ export const DetailContainer = ({ route,navigation }) => {
   const [text, setText] = useState("");
   const [rating, setRating] = useState(0);
   const [showForm, setShowForm] = useState(false);
-
-  const handleTextChange = (inputText) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const token = useAppSelector((state) => state.user.token);
+  const handleTextChange = (inputText: React.SetStateAction<string>) => {
     setText(inputText);
   };
 
-  const handleRating = (rated) => {
+  const handleRating = (rated: React.SetStateAction<number>) => {
     setRating(rated);
   };
 
@@ -54,38 +68,117 @@ export const DetailContainer = ({ route,navigation }) => {
 
   const closeForm = () => {
     setShowForm(false);
-    // You can add logic here to handle form submission or closing actions
+    setRating(0);
+    setText("");
   };
 
-  const handleSubmit = () => {};
-  const token = useAppSelector((state) => state.user.token);
+  const handleSubmit = async () => {
+    await axios
+    .post(`http://103.77.214.189:8000/food/${food_id}/feed_backs`,{
+      star: rating
+    }, {
+      headers: {
+        accept: "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then((res) => {
+      setTimeout(() => {
+        Alert.alert("Note", "Successfull", [
+          { text: "OK", style: "cancel" },
+        ]);
+      }, 5000);
+    })
+    .catch(function (error) {
+      console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        if (error.response.status == 400) {
+          Alert.alert("Note", error.response.data.message, [
+            { text: "OK", style: "cancel" },
+          ]);
+        } else {
+          Alert.alert("Note", "Something went wrong. Please try again.", [
+            { text: "OK", style: "cancel" },
+          ]);
+        }
+      }
+    })
+    .finally(closeForm);
+  };
+
   const fetchDetail = async () => {
-    try {
-      await axios
-        .get(`http://103.77.214.189:8000/food/${food_id}/`, {
-          headers: {
-            accept: "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((res) => {
-          setDetail(res.data);
-          // console.log(res.data)
-          setLoading(false);
-        })
-        .catch(function (error) {
-          console.log(error);
-          if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          }
-        });
-    } catch (error) {}
+    await axios
+      .get(`http://103.77.214.189:8000/food/${food_id}/`, {
+        headers: {
+          accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        setDetail(res.data);
+        // console.log(res.data)
+        setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+      });
   };
   useEffect(() => {
     fetchDetail();
   });
+
+  const handleAddToFavorite = async () => {
+    await axios
+      .post(
+        `http://103.77.214.189:8000/favorite-food/`,
+        {
+          food: food_id,
+        },
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then((res) => {
+        setModalVisible(true);
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 5000);
+      })
+      .catch(function (error) {
+        console.log(error);
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          if (error.response.status == 400) {
+            Alert.alert("Note", error.response.data.message, [
+              { text: "OK", style: "cancel" },
+            ]);
+          } else {
+            Alert.alert("Note", "Something went wrong. Please try again.", [
+              { text: "OK", style: "cancel" },
+            ]);
+          }
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useFocusEffect(() => {
+    return () => {};
+  });
+  
   return (
     <View
       style={{
@@ -93,7 +186,7 @@ export const DetailContainer = ({ route,navigation }) => {
         backgroundColor: "#fff",
       }}
     >
-      <View
+      {/* <View
         style={{
           width: "100%",
           height: "6%",
@@ -113,7 +206,7 @@ export const DetailContainer = ({ route,navigation }) => {
         >
           <AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
-      </View>
+      </View> */}
       {loading ? (
         <HStack space={2} justifyContent="center">
           <Spinner accessibilityLabel="Loading posts" />
@@ -124,6 +217,42 @@ export const DetailContainer = ({ route,navigation }) => {
       ) : (
         <ScrollView style={styles.scrollView}>
           <View style={{ paddingHorizontal: 15 }}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{
+                position: "absolute",
+                top: 5,
+                right: 5,
+                padding: 2,
+                backgroundColor: "rgba(255,255,255,0.75)",
+                borderRadius: 10,
+              }}
+            >
+              <AntDesign name="left" size={24} color="black" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                setLoading(true);
+                handleAddToFavorite();
+              }}
+              style={{
+                position: "absolute",
+                top: 5,
+                right: 5,
+                padding: 2,
+                backgroundColor: "rgba(255,255,255,0.75)",
+                borderRadius: 10,
+              }}
+            >
+              <Ionicons name="heart-circle" size={24} color="#FE724C" />
+            </TouchableOpacity>
+            <LoadingModal visible={loading} />
+            <SuccessModal
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
+            />
+
             <View
               style={{
                 alignItems: "center",
@@ -142,9 +271,7 @@ export const DetailContainer = ({ route,navigation }) => {
             </View>
             <View
               style={{
-                padding: 5,
-                borderBottomColor: "black",
-                borderBottomWidth: StyleSheet.hairlineWidth,
+                marginTop: 10,
               }}
             >
               <Text
@@ -159,28 +286,71 @@ export const DetailContainer = ({ route,navigation }) => {
               </Text>
             </View>
 
-            <View>
-              <Rating
-                type="star"
-                imageSize={20}
-                defaultRating={detail.avg_rating}
-                style={{ paddingVertical: 10 }}
-                readonly={true}
-              />
-              <Button
-                title="Go to Review Screen"
-                onPress={() =>
-                  navigation.navigate("Review", {
-                    food_id: food_id,
-                  })
-                }
-              />
+            <View
+              style={{
+                borderBottomColor: "black",
+                borderBottomWidth: StyleSheet.hairlineWidth,
+                marginBottom: 5,
+              }}
+            >
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 5,
+                  marginTop: 5,
+                  marginBottom: 5,
+                  alignItems: "center",
+                }}
+              >
+                <AntDesign name="star" size={24} color="#FFC529" />
+                <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                  {detail.avg_rating}
+                </Text>
+
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Review", {
+                      food_id: food_id,
+                    })
+                  }
+                  style={{
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#FE724C",
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    See reviews
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 5,
+                  marginTop: 5,
+                  marginBottom: 5,
+                  alignItems: "center",
+                }}
+              >
+                <Ionicons name="heart-circle" size={24} color="#FE724C" />
+                <Text> 273 Likes </Text>
+              </View>
             </View>
             <View
               style={{
                 padding: 5,
                 borderBottomColor: "black",
                 borderBottomWidth: StyleSheet.hairlineWidth,
+                marginTop: 10,
+                marginBottom: 10,
+                gap: 5,
               }}
             >
               <Text
@@ -200,6 +370,8 @@ export const DetailContainer = ({ route,navigation }) => {
                 padding: 5,
                 borderBottomColor: "black",
                 borderBottomWidth: StyleSheet.hairlineWidth,
+                marginTop: 10,
+                marginBottom: 10,
               }}
             >
               <Text
@@ -212,7 +384,24 @@ export const DetailContainer = ({ route,navigation }) => {
                 Ingredients
               </Text>
               {detail.ingredients?.map((ingredient) => {
-                return <Text>{ingredient.original}</Text>;
+                return (
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: 5,
+                      marginTop: 5,
+                      marginBottom: 5,
+                    }}
+                  >
+                    <AntDesign
+                      name="checkcircle"
+                      size={18}
+                      color="rgb(254,114,76)"
+                    />
+                    <Text>{ingredient.original}</Text>
+                  </View>
+                );
               })}
             </View>
             <View
@@ -220,6 +409,8 @@ export const DetailContainer = ({ route,navigation }) => {
                 padding: 5,
                 borderBottomColor: "black",
                 borderBottomWidth: StyleSheet.hairlineWidth,
+                marginTop: 10,
+                marginBottom: 10,
               }}
             >
               <Text
@@ -231,14 +422,25 @@ export const DetailContainer = ({ route,navigation }) => {
                 {" "}
                 Steps
               </Text>
-              {detail.instructions?.map((item) => {
-                return <Text>{`${item.number} - ${item.step}`}</Text>;
+              {detail.instructions?.map((item, idx) => {
+                return (
+                  <View
+                    style={{
+                      marginTop: 5,
+                      marginBottom: 5,
+                    }}
+                  >
+                    <Text>{`${idx + 1} - ${item.step}`}</Text>
+                  </View>
+                );
               })}
             </View>
 
             <View
               style={{
                 padding: 5,
+                marginTop: 10,
+                marginBottom: 10,
               }}
             >
               <Text
@@ -260,6 +462,8 @@ export const DetailContainer = ({ route,navigation }) => {
                       padding: 5,
                       borderBottomColor: "black",
                       borderBottomWidth: StyleSheet.hairlineWidth,
+                      marginTop: 5,
+                      marginBottom: 5,
                     }}
                   >
                     <Text> {item.name}</Text>
@@ -270,14 +474,26 @@ export const DetailContainer = ({ route,navigation }) => {
             </View>
             <View
               style={{
-                flex: 1,
                 alignItems: "center",
-                justifyContent: "center",
                 padding: 5,
-                margin: 5,
               }}
             >
-              <Button title="Feedback" onPress={displayForm} />
+              <TouchableOpacity
+                onPress={displayForm}
+                style={{
+                  minWidth: "45%",
+                  backgroundColor: "#FE724C",
+                  padding: 10,
+                  borderRadius: 10,
+                  alignItems: "center",
+                  marginBottom: 10,
+                  marginTop: 10,
+                }}
+              >
+                <Text style={{ color: "white", fontWeight: "bold" }}>
+                  FEEDBACK
+                </Text>
+              </TouchableOpacity>
               <Modal
                 visible={showForm}
                 animationType="slide"

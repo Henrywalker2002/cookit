@@ -64,6 +64,7 @@ export const MainNavigator = () => {
         name="Profile"
         component={ProfileContainer}
         options={{
+          headerShown: false,
           tabBarLabel: "Profile",
           tabBarIcon: ({ color }) => (
             <AntDesign name="user" size={24} color={color} />

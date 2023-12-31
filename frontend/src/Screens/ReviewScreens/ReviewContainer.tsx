@@ -19,18 +19,24 @@ import {
 import { useFocusEffect } from "@react-navigation/native";
 import { Rating, AirbnbRating } from "react-native-elements";
 import { AntDesign } from "@expo/vector-icons";
+import { useAppSelector } from "@/Hooks/redux";
 
-export const ReviewContainer = ({ route, navigation }) => {
+export interface IReview{
+  route: any;
+  navigation: any;
+}
+
+export const ReviewContainer = ({ route, navigation }: IReview) => {
   const { food_id } = route.params;
   const [text, setText] = useState("");
   const [rating, setRating] = useState(0);
   const [showForm, setShowForm] = useState(false);
 
-  const handleTextChange = (inputText) => {
+  const handleTextChange = (inputText: React.SetStateAction<string>) => {
     setText(inputText);
   };
 
-  const handleRating = (rated) => {
+  const handleRating = (rated: React.SetStateAction<number>) => {
     setRating(rated);
   };
 
@@ -40,23 +46,54 @@ export const ReviewContainer = ({ route, navigation }) => {
 
   const closeForm = () => {
     setShowForm(false);
-    //add logic here to handle form submission or closing actions
+    setRating(0);
+    setText("");
+  };
+  const token = useAppSelector((state) => state.user.token);
+
+  const handleSubmit = async () => {
+    await axios
+    .post(`http://103.77.214.189:8000/food/${food_id}/feed_backs`, {
+      headers: {
+        accept: "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then((res) => {
+      setTimeout(() => {
+        Alert.alert("Note", "Successfull", [
+          { text: "OK", style: "cancel" },
+        ]);
+      }, 5000);
+    })
+    .catch(function (error) {
+      console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        if (error.response.status == 400) {
+          Alert.alert("Note", error.response.data.message, [
+            { text: "OK", style: "cancel" },
+          ]);
+        } else {
+          Alert.alert("Note", "Something went wrong. Please try again.", [
+            { text: "OK", style: "cancel" },
+          ]);
+        }
+      }
+    })
+    .finally(closeForm);
   };
 
-  const handleSubmit = () => {};
   const [loading, setLoading] = useState(true);
   const [star, setStar] = useState(0.0);
   const [review, setReview] = useState([]);
   const fetchFeedback = async () => {
     await axios
-      .get(`http://103.77.214.189:8000/food/${food_id}/get_feedback/`, {
-        withCredentials: true,
+      .get(`http://103.77.214.189:8000/food/${food_id}/get_feedback/`,{
         headers: {
           accept: "application/json",
-          "X-CSRFToken":
-            "qVAqd295uZlJp78iO9UjT3HMaii3PCbVV3zGzi18qUnTfxYmCy4Wb2P480R0BU88",
-          Cookie:
-            "sessionid=dinch9dn99dlcqrcm07qhyb30x0yqv6k; csrftoken=LUBSNIyPQDejOE1KUXDprA0GTcpAFM90",
+          Authorization: "Bearer " + token,
         },
       })
       .then((res) => {
@@ -69,7 +106,9 @@ export const ReviewContainer = ({ route, navigation }) => {
         if (error.response) {
           console.log(error.response.data);
           console.log(error.response.status);
-          console.log(error.response.headers);
+          Alert.alert("Note", "Something went wrong. Please try again.", [
+            { text: "OK", style: "cancel" },
+          ]);
         }
       });
   };
@@ -77,13 +116,11 @@ export const ReviewContainer = ({ route, navigation }) => {
   useEffect(() => {
     fetchFeedback();
   });
+  
   useFocusEffect(() => {
-    // Cleanup function (nếu cần)
-    return () => {
-      // Hàm này sẽ được gọi khi màn hình không còn được focus
-      // Đây là nơi để hủy bỏ các event listener (nếu có)
-    };
+    return () => {};
   });
+
   return (
     <View
       style={{
