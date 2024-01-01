@@ -117,7 +117,7 @@ const Search = ({navigation}) => {
             alignContent={"space-around"}
           >
             {recentFood.map((item,index) => (
-              <DishBox navigation={navigation} food={item} index={index}/>
+              <DishBox navigation={navigation} food={item} index={index} key={index}/>
             ))}
           </Flex>
         </>
@@ -133,7 +133,7 @@ const Search = ({navigation}) => {
             alignContent={"space-around"}
           >
             {rcmDishLst.map((dish,index) => (
-              <DishBox navigation={navigation} food={dish} index={index}/>
+              <DishBox navigation={navigation} food={dish} index={index} key={index}/>
             ))}
           </Flex>
         </>

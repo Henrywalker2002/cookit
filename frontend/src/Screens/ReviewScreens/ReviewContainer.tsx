@@ -61,7 +61,7 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
   };
 
   const token = useAppSelector((state) => state.user.token);
-  const [modlaLoading, setModalLoading] = useState(false);
+  const [modalLoading, setModalLoading] = useState(false);
   const handleSubmit = async () => {
     await axios
       .post(
@@ -100,6 +100,7 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
       })
       .finally(() => {
         setModalLoading(false);
+        closeForm();
       });
   };
 
@@ -188,7 +189,7 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
         </HStack>
       ) : (
         <ScrollView>
-          <LoadingModal visible={modlaLoading} />
+          <LoadingModal visible={modalLoading} />
           <View
             style={{
               alignItems: "center",
@@ -336,7 +337,6 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
                       <Button
                         title="Send"
                         onPress={() => {
-                          closeForm();
                           setModalLoading(true);
                           handleSubmit();
                         }}

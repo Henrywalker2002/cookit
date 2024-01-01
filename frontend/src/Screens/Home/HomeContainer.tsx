@@ -11,5 +11,5 @@ export const HomeContainer = ({navigation}) => {
     fetchOne(userId);
   }, [fetchOne, userId]);
 
-  return <Home data={data} navigation={navigation} />;
+  return <Home data={data} navigation={navigation}/>;
 };

@@ -12,7 +12,7 @@ const OnboardingScreen= (props: {
     <View style={styles.container}>
       <View style={styles.slide} key="1">
         <Image source={require("../../../assets/logo.png")} style={styles.image} />
-        <Text style={styles.text}>Easy chef</Text>
+        <Text style={styles.title}>Easy chef</Text>
         <Text style={styles.text}>Help you cook easily</Text>
 
         <TouchableOpacity
@@ -42,17 +42,25 @@ const styles = StyleSheet.create({
     width: '80%',
     height: '50%',
     resizeMode: 'contain',
-    marginBottom: 20,
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: 'center',
   },
   text: {
     fontSize: 24,
     marginBottom: 10,
   },
   button: {
-    backgroundColor: 'orange',
+    backgroundColor: '#FE724C',
     padding: 10,
     borderRadius: 5,
     marginTop: 20,
+    minWidth: '60%',
+    alignItems: 'center',
   },
   buttonText: {
     color: 'white',

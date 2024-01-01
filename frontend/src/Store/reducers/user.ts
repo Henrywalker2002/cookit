@@ -49,8 +49,10 @@ const slice = createSlice({
     SETISUSED: (state, { payload: {} }) => {
       state.isUsedApp = true;
     },
-    UPDATEUSER: (state, { payload: { user } }) => {
-      state.user = user;
+    UPDATEUSER: (state, { payload: {email, full_name, avatar } }) => {
+      state.user.fullName = full_name;
+      state.user.email = email;
+      state.user.avatar = avatar;
     },
     UPDATE_RECENT: (state, { payload: _food}) => {
         state.recendFood = state.recendFood.filter(

@@ -76,10 +76,21 @@ export const Login = ({ navigation }: LoginScreenProps) => {
   return (
     <View style={styles.container}>
       <View style={{
-        margin: 20
+        margin: 15
       }}>
 
-        <Text> Login screens</Text>
+        <View style={{ alignItems: "center" }}>
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 21,
+              textAlign: "center",
+            }}
+          >
+            {" "}
+            Login{" "}
+          </Text>
+        </View>
         <Text> Email</Text>
         <TextInput
           style={{
@@ -179,7 +190,7 @@ export const Login = ({ navigation }: LoginScreenProps) => {
         <Text
           style={{
             textAlign: "center",
-            margin: 20,
+            margin: 10,
           }}
         >
           Sign in with
@@ -235,8 +246,8 @@ export const Login = ({ navigation }: LoginScreenProps) => {
             </View>
           </Button>
         </View>
+        <LoadingModal visible={loading}/>
       </View>
-      <LoadingModal visible={loading}/>
     </View>
   );
 };

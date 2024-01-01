@@ -52,7 +52,7 @@ export const DetailContainer = ({ route, navigation }) => {
   const [text, setText] = useState("");
   const [rating, setRating] = useState(0);
   const [showForm, setShowForm] = useState(false);
-  const [modlaLoading, setModalLoading] = useState(false);
+  const [modalLoading, setModalLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const token = useAppSelector((state) => state.user.token);
   const handleTextChange = (inputText: React.SetStateAction<string>) => {
@@ -179,6 +179,7 @@ export const DetailContainer = ({ route, navigation }) => {
       })
       .finally(() => {
         setModalLoading(false);
+        closeForm();
       });
   };
 
@@ -342,9 +343,10 @@ export const DetailContainer = ({ route, navigation }) => {
                 {" "}
                 Ingredients
               </Text>
-              {detail.ingredients?.map((ingredient) => {
+              {detail.ingredients?.map((ingredient,idx) => {
                 return (
                   <View
+                    key={idx}
                     style={{
                       display: "flex",
                       flexDirection: "row",
@@ -383,7 +385,7 @@ export const DetailContainer = ({ route, navigation }) => {
               </Text>
               {detail.instructions?.map((item, idx) => {
                 return (
-                  <View
+                  <View key={idx}
                     style={{
                       marginTop: 5,
                       marginBottom: 5,
@@ -411,9 +413,10 @@ export const DetailContainer = ({ route, navigation }) => {
                 {" "}
                 Nutrition Facts
               </Text>
-              {detail.nutrients?.map((item) => {
+              {detail.nutrients?.map((item,idx) => {
                 return (
                   <View
+                    key={idx}
                     style={{
                       display: "flex",
                       flexDirection: "row",
@@ -526,7 +529,6 @@ export const DetailContainer = ({ route, navigation }) => {
                       <Button
                         title="Send"
                         onPress={() => {
-                          closeForm();
                           setModalLoading(true);
                           handleSubmit();
                         }}
@@ -567,7 +569,7 @@ export const DetailContainer = ({ route, navigation }) => {
             >
               <Ionicons name="heart-circle" size={24} color="#FE724C" />
             </TouchableOpacity>
-            <LoadingModal visible={modlaLoading} />
+            <LoadingModal visible={modalLoading} />
             <SuccessModal
               visible={modalVisible}
               onClose={() => setModalVisible(false)}

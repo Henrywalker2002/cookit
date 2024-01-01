@@ -1,19 +1,21 @@
 import { i18n, LocalizationKey } from "@/Localization";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  BackHandler
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading, Flex } from "native-base";
 import { User } from "@/Services";
 import ScreenTitle from "@/Components/ScreenTitle";
 import DishBox from "@/Components/DishBox";
-import { useAppSelector } from "@/Hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/Hooks/redux";
 import axios from "axios";
+import { UPDATE_RECENT } from "@/Store/reducers";
 
 export interface IHomeProps {
   data: User | undefined;
@@ -22,14 +24,11 @@ export interface IHomeProps {
 
 export const Home = (props: IHomeProps) => {
   const { data, navigation } = props;
+  const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.user.token);
   const recent_food = useAppSelector((state) => state.user.recendFood);
   const [loading, setLoading] = useState(true);
-  const [foodList, setFoodList] = useState({
-    count: 0,
-    next: "",
-    previoust: "",
-    results: [
+  const [foodList, setFoodList] = useState( [
       {
         id: 0,
         name: "",
@@ -39,34 +38,63 @@ export const Home = (props: IHomeProps) => {
         avg_rating: 0.0,
       },
     ],
-  });
-  const fetchFood = async () => {
-    await axios
-      .get(`http://103.77.214.189:8000/food/`, {
-        headers: {
-          accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((res) => {
-        setFoodList(res.data);
-        // console.log(foodList);
-        setLoading(false);
-      })
-      .catch(function (error) {
-        console.log(error);
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        }
-      });
-  };
+  );
+  // const fetchFood = async () => {
+  //   await axios
+  //     .get(`http://103.77.214.189:8000/food/get_foods_by_user/`, {
+  //       headers: {
+  //         accept: "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       setFoodList(res.data.recommended_foods);
+  //       res.data.recent_foods.map( (item: any)=>{
+  //         dispatch(UPDATE_RECENT(item))
+  //       })
+  //       setLoading(false);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //       if (error.response) {
+  //         console.log(error.response.data);
+  //         console.log(error.response.status);
+  //         console.log(error.response.headers);
+  //       }
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   fetchFood();
+  // },[token, dispatch]);
 
   useEffect(() => {
-    fetchFood();
-  });
+    const fetchFood = async () => {
+      try {
+        const response = await axios.get('http://103.77.214.189:8000/food/get_foods_by_user/', {
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+        });
 
+        const { recommended_foods, recent_foods } = response.data;
+
+        setFoodList(recommended_foods);
+        recent_foods.forEach((item) => {
+          dispatch(UPDATE_RECENT(item));
+        });
+
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching food data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchFood();
+  }, [token, dispatch]);
+  
   return (
     <Flex style={styles.container}>
       <ScreenTitle title="Dashboard" />
@@ -100,15 +128,41 @@ export const Home = (props: IHomeProps) => {
             wrap="wrap"
             alignContent={"space-around"}
           >
-            {foodList.results.map((item,index) => {
+            {foodList.map((item,index) => {
               return (
-                <DishBox navigation={navigation} food={item} index={index}/>
+                <DishBox navigation={navigation} food={item} index={index} key={index}/>
               );
             })}
           </Flex>
         )}
         {/* Recent food  */}
 
+        <Flex
+          direction="row"
+          justify="space-between"
+          wrap="wrap"
+          alignContent={"center"}
+        >
+          <View>
+            <Text style={styles.label}>Recent</Text>
+          </View>
+          <TouchableOpacity>
+            <Text>View All </Text>
+          </TouchableOpacity>
+        </Flex>
+          <Flex
+            direction="row"
+            style={{ gap: 3 }}
+            justify="center"
+            wrap="wrap"
+            alignContent={"space-around"}
+          >
+            {recent_food?.map((item,index) => {
+              return (
+                <DishBox navigation={navigation} food={item} index={index} key={index}/>
+              );
+            })}
+          </Flex>
       </ScrollView>
 
       <StatusBar />

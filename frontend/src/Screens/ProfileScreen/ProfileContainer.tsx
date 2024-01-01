@@ -9,17 +9,22 @@ import {
   Image,
   TextInput,
   Modal,
+  Alert,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import { useFocusEffect } from "@react-navigation/native";
-import { useAppSelector } from "@/Hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/Hooks/redux";
 import ScreenTitle from "@/Components/ScreenTitle";
+import { UPDATEUSER } from "@/Store/reducers";
+import LoadingModal from "@/Components/CustomModal/LoadingModal";
 
 export const ProfileContainer = () => {
+  const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.user.token);
   const [loading, setLoading] = useState(true);
+  const [modalLoading, setModalLoading] = useState(false);
   const [user, setUser] = useState({
     id: "",
     email: "",
@@ -34,8 +39,30 @@ export const ProfileContainer = () => {
   });
 
   const [items, setItems] = useState([
-    { label: "MALE", value: "MALE" },
-    { label: "FEMALE", value: "FEMALE" },
+    {
+      label: "MALE",
+      value: "MALE",
+      containerStyle: {
+        backgroundColor: "#FE724C",
+        height: 29,
+        borderWidth: 1,
+        borderColor: "#fff",
+      },
+      labelStyle: {
+        color: "#fff",
+      },
+    },
+    {
+      label: "FEMALE",
+      value: "FEMALE",
+      containerStyle: {
+        backgroundColor: "#FE724C",
+        height: 29,
+      },
+      labelStyle: {
+        color: "#fff",
+      },
+    },
   ]);
   const [open, setOpen] = useState(false);
   const [gender, setGender] = useState(""); // State to store selected gender
@@ -50,9 +77,6 @@ export const ProfileContainer = () => {
     fetchUser();
   };
 
-  const handleGenderChange = (itemValue: React.SetStateAction<string>) => {
-    setGender(itemValue);
-  };
   const user_id = useAppSelector((state) => state.user.user.id);
   const fetchUser = async () => {
     await axios
@@ -81,7 +105,50 @@ export const ProfileContainer = () => {
     fetchUser();
   }, [loading]);
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    axios.put(`http://103.77.214.189:8000/user/${user_id}/`, {
+      email: user.email,
+      full_name: user.full_name,
+      gender: gender,
+      height: user.height,
+      weight: user.weight,
+    },
+    {
+      headers: {
+        accept: "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then((res) => {
+      setUser(res.data);
+      setGender(res.data.gender);
+      dispatch(UPDATEUSER(res.data));
+      setTimeout(() => {
+        Alert.alert("Note", "Updated!", [{ text: "OK", style: "cancel" }]);
+      }, 500);
+      
+    })
+    .catch(function (error) {
+      console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        if (error.response.status == 400) {
+          Alert.alert("Note", "Invalid input. Please try again!", [
+            { text: "OK", style: "cancel" },
+          ]);
+        } else {
+          Alert.alert("Note", "Something went wrong. Please try again.", [
+            { text: "OK", style: "cancel" },
+          ]);
+        }
+      }
+    })
+    .finally(() => {
+      setModalLoading(false);
+      closeForm();
+    });
+  };
 
   const handleChangeInfo = (name: string, value: string) => {
     setUser({ ...user, [name]: value });
@@ -189,7 +256,7 @@ export const ProfileContainer = () => {
               style={{
                 width: "100%",
                 height: 50,
-                borderColor: "gray",
+                borderColor: "black",
                 borderWidth: 1,
                 marginBottom: 20,
                 paddingHorizontal: 10,
@@ -204,7 +271,7 @@ export const ProfileContainer = () => {
               style={{
                 width: "100%",
                 height: 50,
-                borderColor: "gray",
+                borderColor: "black",
                 borderWidth: 1,
                 marginBottom: 20,
                 marginTop: 10,
@@ -216,24 +283,8 @@ export const ProfileContainer = () => {
               value={user.email}
             />
 
-            <View style={{marginBottom: 20,}}>
-              <Text>Gender:</Text>
-              <DropDownPicker
-                open={open}
-                value={gender}
-                items={items}
-                setOpen={setOpen}
-                setValue={setGender}
-                setItems={setItems}
-
-                listItemContainerStyle={{backgroundColor: '#fafafa',}}
-                listItemLabelStyle={{backgroundColor: '#fafafa',}}
-              />
-            </View>
-
             {/* <Text>Date of Birth</Text> */}
 
-            <Text>Current TDEE</Text>
             <View
               style={{
                 display: "flex",
@@ -241,26 +292,49 @@ export const ProfileContainer = () => {
                 justifyContent: "space-between",
               }}
             >
-              <TextInput
-                style={{
-                  width: "45%",
-                  height: 50,
-                  borderColor: "gray",
-                  borderWidth: 1,
-                  marginBottom: 20,
-                  marginTop: 10,
-                  paddingHorizontal: 10,
-                  borderRadius: 10,
-                  color: "black",
-                }}
-                editable={false}
-                value={user.tdee ? user.tdee.toString() : "0"}
-              />
+              <View style={{ marginBottom: 20, width: "45%" }}>
+                <Text>Gender</Text>
+                <DropDownPicker
+                  open={open}
+                  value={gender}
+                  items={items}
+                  setOpen={setOpen}
+                  setValue={setGender}
+                  setItems={setItems}
+                />
+              </View>
 
-              {/* <TouchableOpacity onPress={displayForm}>
-                <Text>Update</Text>
-              </TouchableOpacity> */}
+              <View style={{ marginBottom: 20, width: "45%" }}>
+                <Text>Current TDEE(kcal)</Text>
+                <TextInput
+                  style={{
+                    height: 50,
+                    borderColor: "black",
+                    borderWidth: 1,
+                    marginBottom: 20,
+                    paddingHorizontal: 10,
+                    borderRadius: 10,
+                    color: "black",
+                  }}
+                  editable={false}
+                  value={user.tdee ? user.tdee.toString() : "0"}
+                />
+              </View>
             </View>
+
+            <TouchableOpacity
+              onPress={displayForm}
+              style={{
+                backgroundColor: "#FE724C",
+                padding: 10,
+                borderRadius: 5,
+                marginTop: 20,
+                minWidth: "60%",
+                alignItems: "center",
+              }}
+            >
+              <Text>Update</Text>
+            </TouchableOpacity>
             <Modal
               visible={showForm}
               animationType="slide"
@@ -389,17 +463,22 @@ export const ProfileContainer = () => {
                       color="#FE724C"
                     />
 
-                    <Button
+                    {/* <Button
                       title="Calculate"
                       onPress={closeForm}
                       color="#FE724C"
-                    />
+                    /> */}
 
                     <Button
                       title="Save"
-                      onPress={handleSubmit}
+                      onPress={() => {
+                        // closeForm();
+                        setModalLoading(true);
+                        handleSubmit();
+                      }}
                       color="#FE724C"
                     />
+                    <LoadingModal visible={modalLoading} />
                   </View>
                 </View>
               </View>

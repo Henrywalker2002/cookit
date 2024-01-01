@@ -44,36 +44,51 @@ export const Signup = ({ navigation }: SignupScreenProps) => {
     setInfo({ ...info, [name]: value });
   };
 
-  const handleSubmit = async() => {
-    await axios.post(`http://103.77.214.189:8000/user/`, info)
-    .then( (res) => {
-      setTimeout(() => {
-        Alert.alert("Note", "Congratulations, your account has been successfully created!", [{ text: "OK", style: "cancel" }]);
-      }, 500);
-      navigation.navigate("Login");
-    })
-    .catch((error) => {
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-        if(error.response.status == 400){
-          alert("Enter a valid email address")
+  const handleSubmit = async () => {
+    await axios
+      .post(`http://103.77.214.189:8000/user/`, info)
+      .then((res) => {
+        setTimeout(() => {
+          Alert.alert(
+            "Note",
+            "Congratulations, your account has been successfully created!",
+            [{ text: "OK", style: "cancel" }]
+          );
+        }, 500);
+        navigation.navigate("Login");
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          if (error.response.status == 400) {
+            alert("Enter a valid email address");
+          } else {
+            alert(error.response.data);
+          }
         }
-        else{
-          alert(error.response.data)
-        }
-      }
-    })
-    .finally(() => {
-      setLoading(false);
-    });
-  }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <View style={styles.container}>
-      <View style={{margin: 20}}>
-        <Text> Sign Up screens</Text>
+      <View style={{ margin: 20 }}>
+        <View style={{ marginBottom: 10, alignItems: "center" }}>
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 21,
+              textAlign: "center",
+            }}
+          >
+            {" "}
+            Sign Up{" "}
+          </Text>
+        </View>
         <Text> Fullname</Text>
         <TextInput
           style={{
@@ -234,7 +249,7 @@ export const Signup = ({ navigation }: SignupScreenProps) => {
           </Button>
         </View>
       </View>
-      <LoadingModal visible={loading}/>
+      <LoadingModal visible={loading} />
     </View>
   );
 };
@@ -243,6 +258,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
 });

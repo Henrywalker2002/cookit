@@ -91,6 +91,7 @@ export const Favorite = ({navigation}) => {
                   navigation={navigation}
                   food={item}
                   index={index}
+                  key={index}
                 />
               );
             })}
