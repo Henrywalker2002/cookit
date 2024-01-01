@@ -11,7 +11,7 @@ const OnboardingScreen= (props: {
   return (
     <View style={styles.container}>
       <View style={styles.slide} key="2">
-        <Image source={require("../../../assets/logo.png")} style={styles.image} />
+        <Image source={require("../../../assets/logo.png")} style={styles.image} alt="image"/>
         <Text style={styles.text}>Smart chef</Text>
         <Text style={styles.text}>Cook everything from everything you have</Text>
         <TouchableOpacity

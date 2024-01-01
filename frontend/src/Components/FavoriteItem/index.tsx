@@ -17,7 +17,7 @@ import {
   HStack,
   Spinner,
 } from "native-base";
-interface DishBoxProps {
+interface Props {
   food: {
     id: number;
     name: string;
@@ -34,23 +34,20 @@ import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/Hooks/redux";
 import { LocalizationKey, i18n } from "@/Localization";
 import { UPDATE_RECENT } from "@/Store/reducers";
-import LoadingModal from "./CustomModal/LoadingModal";
-import SuccessModal from "./CustomModal/SuccessModal";
+import LoadingModal from "../CustomModal/LoadingModal";
+import DeletedModal from "../CustomModal/DeletedModal";
 
-const DishBox = (props: DishBoxProps) => {
+const FavoriteItem = (props: Props) => {
   const { food, navigation,index } = props;
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.user.token);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleAddToFavorite = async () => {
+  const handleRemoveFromFavorite = async () => {
     await axios
-      .post(
-        `http://103.77.214.189:8000/favorite-food/`,
-        {
-          food: food.id,
-        },
+      .delete(
+        `http://103.77.214.189:8000/favorite-food/${food.id}/`,
         {
           headers: {
             accept: "application/json",
@@ -92,13 +89,13 @@ const DishBox = (props: DishBoxProps) => {
   };
   return (
     <Box
-      maxW="49%"
       rounded="lg"
-      overflow="hidden"
+      width="100%"
       borderColor="coolGray.200"
       borderRadius={20}
       borderWidth="1"
       alignContent={"center"}
+      marginBottom={2}
       _dark={{
         borderColor: "coolGray.600",
         backgroundColor: "gray.700",
@@ -194,7 +191,7 @@ const DishBox = (props: DishBoxProps) => {
       <TouchableOpacity
         onPress={() => {
           setLoading(true);
-          handleAddToFavorite();
+          handleRemoveFromFavorite();
         }}
         style={{
           position: "absolute",
@@ -209,7 +206,7 @@ const DishBox = (props: DishBoxProps) => {
       </TouchableOpacity>
 
       <LoadingModal visible={loading} />
-      <SuccessModal
+      <DeletedModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
       />
@@ -217,4 +214,4 @@ const DishBox = (props: DishBoxProps) => {
   );
 };
 
-export default DishBox;
+export default FavoriteItem;

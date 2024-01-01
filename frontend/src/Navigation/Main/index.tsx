@@ -6,6 +6,7 @@ import { AntDesign, Foundation, MaterialIcons } from "@expo/vector-icons";
 import { Plan } from "@/Screens/Plan";
 import { Favorite } from "@/Screens/Favorite";
 import { Profile } from "@/Screens/Profile";
+import { ProfileContainer } from "@/Screens/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +23,7 @@ export const MainNavigator = () => {
         name="Home"
         component={HomeContainer}
         options={{
+          headerShown: false,
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
             <Foundation name="home" size={24} color={color} />
@@ -33,6 +35,7 @@ export const MainNavigator = () => {
         component={Search}
         options={{
           tabBarLabel: "Search",
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <AntDesign name="search1" size={24} color={color} />
           ),
@@ -53,6 +56,7 @@ export const MainNavigator = () => {
         component={Favorite}
         options={{
           tabBarLabel: "Favorite",
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="favorite-border" size={24} color={color} />
           ),
@@ -60,8 +64,9 @@ export const MainNavigator = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={ProfileContainer}
         options={{
+          headerShown: false,
           tabBarLabel: "Profile",
           tabBarIcon: ({ color }) => (
             <AntDesign name="user" size={24} color={color} />
