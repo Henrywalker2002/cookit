@@ -13,6 +13,7 @@ import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/Hooks/redux";
 import { LOGIN } from "@/Store/reducers";
 import { LocalizationKey, i18n } from "@/Localization";
+import LoadingModal from "@/Components/CustomModal/LoadingModal";
 
 type AuthScreenNavigatorProps = NativeStackScreenProps<
   AuthStackParamList,
@@ -235,25 +236,7 @@ export const Login = ({ navigation }: LoginScreenProps) => {
           </Button>
         </View>
       </View>
-      <Modal visible={loading} transparent={true}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            width: "100%",
-            height: "100%",
-            justifyContent: "center",
-          }}
-        >
-          <HStack space={2} justifyContent="center">
-            <Spinner accessibilityLabel="Loading posts" />
-            <Heading color="primary.500" fontSize="lg">
-              {i18n.t(LocalizationKey.LOADING)}
-            </Heading>
-          </HStack>
-        </View>
-      </Modal>
+      <LoadingModal visible={loading}/>
     </View>
   );
 };

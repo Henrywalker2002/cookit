@@ -15,50 +15,16 @@ import { AntDesign } from "@expo/vector-icons";
 import NavBar from "@/Components/NavBar";
 import { launchCameraAsync } from "expo-image-picker";
 import ScreenTitle from "@/Components/ScreenTitle";
+import { useAppSelector } from "@/Hooks/redux";
+
 const avt = require("../../../assets/search/MaskGroup.png");
 const tab = require("../../../assets/search/tab.png");
 const filter = require("../../../assets/search/filter.png");
-const Search = () => {
-  const [jwtToken, setJwtToken] = useState("");
-  const [rcmDishLst, setRcmDishLst] = useState([]);
-  useEffect(() => {
-    login("user@example.com", "string").then((rs) => console.log("Logged in"));
-  }, []);
-  const login = async (username: string, password: string) => {
-    let _resp;
-    try {
-      _resp = await axios.post(
-        "http://103.77.214.189:8000/v2/login/",
-        {
-          email: username,
-          password: password,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: false,
-        }
-      );
-      console.log("Login success:\n");
-      console.log(_resp.data);
-      setJwtToken(_resp.data["access"]);
-      console.log("access jwt: " + jwtToken);
-    } catch (error) {
-      console.log("Login fail:\n");
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        console.log(error.request);
-      } else {
-        console.log("Error", error.message);
-      }
-    }
 
-    //
-  };
+const Search = ({navigation}) => {
+  const [rcmDishLst, setRcmDishLst] = useState([]);
+  const jwtToken = useAppSelector((state) => state.user.token);
+  const recentFood = useAppSelector((state) => state.user.recendFood);
   const uploadImgToSearch = async (uri: string, fileName: string) => {
     try {
       const fData = new FormData();
@@ -131,6 +97,7 @@ const Search = () => {
               <Image
                 source={{ uri: imageSrc }}
                 style={{ width: 600, height: 600 }}
+                alt="image"
               />
             </Modal.Body>
           </Modal.Content>
@@ -140,7 +107,6 @@ const Search = () => {
   };
   const showDish = () => {
     if (rcmDishLst.length == 0) {
-      const hold = [0, 0, 0, 0, 0, 0];
       return (
         <>
           <Flex
@@ -150,8 +116,8 @@ const Search = () => {
             wrap="wrap"
             alignContent={"space-around"}
           >
-            {hold.map((ele) => (
-              <DishBox />
+            {recentFood.map((item,index) => (
+              <DishBox navigation={navigation} food={item} index={index}/>
             ))}
           </Flex>
         </>
@@ -166,19 +132,16 @@ const Search = () => {
             wrap="wrap"
             alignContent={"space-around"}
           >
-            {rcmDishLst.map((dish) => (
-              <DishBox
-                dishName={dish["name"]}
-                duration={dish["time_taken"]}
-                imgUri={dish["image"]}
-              />
+            {rcmDishLst.map((dish,index) => (
+              <DishBox navigation={navigation} food={dish} index={index}/>
             ))}
           </Flex>
         </>
       );
   };
   return (
-    <>
+    <View
+    style={styles.screenContainer}>
       {showShutImage()}
 
       <ScreenTitle title="Search" />
@@ -193,7 +156,7 @@ const Search = () => {
             <AntDesign name="search1" size={24} color="black" />
           </TouchableOpacity>
           <FormControl width={"60%"}>
-            <Input placeholder="Search recipes" height={8} />
+            <Input placeholder="Search" height={8} />
           </FormControl>
           <TouchableOpacity
             onPress={() => {
@@ -204,7 +167,7 @@ const Search = () => {
           </TouchableOpacity>
         </Flex>
         <View style={{ marginTop: 0 }}>
-          <Image source={filter} />
+          <FontAwesome name="sliders" size={24} color="#FE724C" />
         </View>
       </Flex>
       <Flex direction="row" justify="space-around" style={{ margin: 5 }}>
@@ -235,16 +198,15 @@ const Search = () => {
         </TouchableOpacity>
       </Flex>
       <ScrollView>{showDish()}</ScrollView>
-    </>
+    </View>
   );
 };
 const styles = StyleSheet.create({
   screenContainer: {
-    backgroundColor: "#ffffff",
-    display: "flex",
-    flexDirection: "row",
+    marginTop: "12%",
+    flex: 1,
     justifyContent: "center",
-    width: "100%",
+    backgroundColor: "white",
   },
   container: {
     display: "flex",
@@ -256,7 +218,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: 320,
-    height: 68,
+    height: 60,
     marginHorizontal: 20,
     alignItems: "center",
     justifyContent: "center",
@@ -265,11 +227,11 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     backgroundColor: "#FE724C",
-    borderRadius: 32,
+    borderRadius: 30,
     display: "flex",
-    gap: 10,
+    gap: 8,
     position: "relative",
-    padding: 15,
+    padding: 5,
     paddingLeft: 24,
     paddingRight: 24,
   },

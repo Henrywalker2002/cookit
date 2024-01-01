@@ -14,14 +14,15 @@ import {
   Image,
   Modal,
   TextInput,
-  TouchableOpacity 
+  TouchableOpacity,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { Rating, AirbnbRating } from "react-native-elements";
 import { AntDesign } from "@expo/vector-icons";
 import { useAppSelector } from "@/Hooks/redux";
-
-export interface IReview{
+import LoadingModal from "@/Components/CustomModal/LoadingModal";
+import { FontAwesome } from "@expo/vector-icons";
+export interface IReview {
   route: any;
   navigation: any;
 }
@@ -49,48 +50,77 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
     setRating(0);
     setText("");
   };
-  const token = useAppSelector((state) => state.user.token);
 
+  const formatDate = (timestamp: string | number | Date) => {
+    const date = new Date(timestamp);
+    const day = date.getDate().toString().padStart(2, "0"); // Get day with leading zero if needed
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Get month with leading zero if needed
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
+
+  const token = useAppSelector((state) => state.user.token);
+  const [modlaLoading, setModalLoading] = useState(false);
   const handleSubmit = async () => {
     await axios
-    .post(`http://103.77.214.189:8000/food/${food_id}/feed_backs`, {
-      headers: {
-        accept: "application/json",
-        Authorization: "Bearer " + token,
-      },
-    })
-    .then((res) => {
-      setTimeout(() => {
-        Alert.alert("Note", "Successfull", [
-          { text: "OK", style: "cancel" },
-        ]);
-      }, 5000);
-    })
-    .catch(function (error) {
-      console.log(error);
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        if (error.response.status == 400) {
-          Alert.alert("Note", error.response.data.message, [
-            { text: "OK", style: "cancel" },
-          ]);
-        } else {
-          Alert.alert("Note", "Something went wrong. Please try again.", [
-            { text: "OK", style: "cancel" },
-          ]);
+      .post(
+        `http://103.77.214.189:8000/food/${food_id}/feedback/`,
+        {
+          rating: rating,
+          comment: text,
+        },
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
         }
-      }
-    })
-    .finally(closeForm);
+      )
+      .then((res) => {
+        setTimeout(() => {
+          Alert.alert("Note", "Successfull", [{ text: "OK", style: "cancel" }]);
+        }, 500);
+      })
+      .catch(function (error) {
+        console.log(error);
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          if (error.response.status == 400) {
+            Alert.alert("Note", error.response.data.message, [
+              { text: "OK", style: "cancel" },
+            ]);
+          } else {
+            Alert.alert("Note", "Something went wrong. Please try again.", [
+              { text: "OK", style: "cancel" },
+            ]);
+          }
+        }
+      })
+      .finally(() => {
+        setModalLoading(false);
+      });
   };
 
   const [loading, setLoading] = useState(true);
   const [star, setStar] = useState(0.0);
-  const [review, setReview] = useState([]);
+  const [review, setReview] = useState([
+    {
+      id: 0,
+      rating: 0,
+      comment: "",
+      created_at: "",
+      user: {
+        id: "",
+        full_name: "",
+        avatar: "",
+      },
+    },
+  ]);
   const fetchFeedback = async () => {
     await axios
-      .get(`http://103.77.214.189:8000/food/${food_id}/get_feedback/`,{
+      .get(`http://103.77.214.189:8000/food/${food_id}/get_feedback/`, {
         headers: {
           accept: "application/json",
           Authorization: "Bearer " + token,
@@ -116,7 +146,7 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
   useEffect(() => {
     fetchFeedback();
   });
-  
+
   useFocusEffect(() => {
     return () => {};
   });
@@ -135,14 +165,17 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
         }}
       ></View>
       <View>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{
-          padding: 3,
-          backgroundColor: "#FFFFFF",
-          borderRadius: 10,
-          width: "10%",
-          margin: 5,
-          elevation: 8,
-        }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            padding: 3,
+            backgroundColor: "#FFFFFF",
+            borderRadius: 10,
+            width: "10%",
+            margin: 5,
+            elevation: 8,
+          }}
+        >
           <AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -155,6 +188,7 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
         </HStack>
       ) : (
         <ScrollView>
+          <LoadingModal visible={modlaLoading} />
           <View
             style={{
               alignItems: "center",
@@ -171,7 +205,25 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
               {" "}
               Overall Rating
             </Text>
-
+            <View
+            style={{
+              margin: 5,
+              display: "flex",
+              columnGap: 2,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+            >
+              <Text
+                style={{
+                  fontSize: 40,
+                }}
+              >
+                {" "}
+                {star}
+              </Text>
+              <FontAwesome name="star" size={40} color="#FFC529" />
+            </View>
             <Text
               style={{
                 fontSize: 15,
@@ -185,17 +237,18 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
             style={{
               padding: 5,
               margin: 5,
-              display: 'flex',
-              justifyContent: 'space-between',
+              display: "flex",
+              justifyContent: "space-between",
               columnGap: 2,
               flexDirection: "row",
             }}
           >
-            <View >
+            <View>
               <Text
                 style={{
                   fontSize: 15,
-                  fontWeight: "bold",textAlign: 'center'
+                  fontWeight: "bold",
+                  textAlign: "center",
                 }}
               >
                 {" "}
@@ -209,7 +262,7 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
                 onPress={displayForm}
                 color="#FE724C"
               />
-              
+
               <Modal
                 visible={showForm}
                 animationType="slide"
@@ -221,67 +274,151 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
                     flex: 1,
                     alignItems: "center",
                     justifyContent: "center",
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
                   }}
                 >
                   <View
                     style={{
-                      backgroundColor: 'white',
+                      backgroundColor: "white",
                       padding: 20,
                       borderRadius: 10,
-                      alignItems: 'center',
+                      alignItems: "center",
                       elevation: 5,
                     }}
                   >
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {" "}
-                    Send your feedback
-                  </Text>
-                  <AirbnbRating
-                    count={5}
-                    reviews={["Terrible", "Bad", "OK", "Good", "Excellent"]}
-                    defaultRating={0}
-                    size={20}
-                    showRating
-                    onFinishRating={handleRating}
-                  />
-                  <TextInput
-                    style={{
-                      width: 300,
-                      borderColor: "gray",
-                      borderWidth: 1,
-                      marginBottom: 20,
-                      marginTop: 10,
-                      paddingHorizontal: 10,
-                    }}
-                    multiline
-                    numberOfLines={4}
-                    maxLength={40}
-                    placeholder="Enter your feedback"
-                    onChangeText={handleTextChange}
-                    value={text}
-                  />
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {" "}
+                      Send your feedback
+                    </Text>
+                    <AirbnbRating
+                      count={5}
+                      reviews={["Terrible", "Bad", "OK", "Good", "Excellent"]}
+                      defaultRating={0}
+                      size={20}
+                      showRating
+                      onFinishRating={handleRating}
+                    />
+                    <TextInput
+                      style={{
+                        width: 300,
+                        borderColor: "gray",
+                        borderWidth: 1,
+                        marginBottom: 20,
+                        marginTop: 10,
+                        paddingHorizontal: 10,
+                      }}
+                      multiline
+                      numberOfLines={4}
+                      maxLength={40}
+                      placeholder="Enter your feedback"
+                      onChangeText={handleTextChange}
+                      value={text}
+                    />
 
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-around",
-                      width: "80%",
-                    }}
-                  >
-                    <Button title="Cancel" onPress={closeForm} color="#FE724C"/>
-                    <Button title="Send" onPress={handleSubmit} color="#FE724C"/>
-                  </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        width: "80%",
+                      }}
+                    >
+                      <Button
+                        title="Cancel"
+                        onPress={closeForm}
+                        color="#FE724C"
+                      />
+                      <Button
+                        title="Send"
+                        onPress={() => {
+                          closeForm();
+                          setModalLoading(true);
+                          handleSubmit();
+                        }}
+                        color="#FE724C"
+                      />
+                    </View>
                   </View>
                 </View>
               </Modal>
             </View>
+          </View>
+          <View
+            style={{
+              padding: 5,
+              margin: 5,
+            }}
+          >
+            {review.map((item) => {
+              return (
+                <View>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "flex-start",
+                      rowGap: 4,
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: 75,
+                        borderWidth: 1,
+                        borderColor: "#fff",
+                        overflow: "hidden",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Image
+                        source={require("../../../assets/avatar.png")}
+                        alt="image"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          resizeMode: "cover",
+                        }}
+                      />
+                    </View>
+                    <View>
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {" "}
+                        {item.user.full_name}
+                      </Text>
+                      <Rating
+                        fractions={1}
+                        imageSize={11}
+                        readonly
+                        startingValue={item.rating}
+                      />
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      paddingLeft: 48,
+                    }}
+                  >
+                    <Text style={{ color: "#7F7D92", fontSize: 16 }}>
+                      {item.comment}
+                    </Text>
+                    <Text style={{ color: "#7F7D92", fontSize: 12 }}>
+                      {formatDate(item.created_at)}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
           </View>
         </ScrollView>
       )}

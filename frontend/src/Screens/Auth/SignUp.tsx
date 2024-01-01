@@ -7,6 +7,8 @@ import { RootScreens } from "..";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+import LoadingModal from "@/Components/CustomModal/LoadingModal";
 type AuthScreenNavigatorProps = NativeStackScreenProps<
   AuthStackParamList,
   "Signup"
@@ -41,22 +43,32 @@ export const Signup = ({ navigation }: SignupScreenProps) => {
   const handleChangeInfo = (name: string, value: string) => {
     setInfo({ ...info, [name]: value });
   };
-  // const handleSubmit = async() => {
-  //     try {
-  //         setLoading(true)
-  //         const payload = await fetch({
-  //             email: info.username,
-  //             password: info.password,
-  //         }).unwrap()
 
-  //         dispatch(LOGIN(payload))
-  //         setLoading(false)
-  //         navigation.navigate(RootScreens.MAIN)
-  //     } catch (error) {
-  //         setLoading(false)
-  //         alert('Invalid credentials')
-  //     }
-  // }
+  const handleSubmit = async() => {
+    await axios.post(`http://103.77.214.189:8000/user/`, info)
+    .then( (res) => {
+      setTimeout(() => {
+        Alert.alert("Note", "Congratulations, your account has been successfully created!", [{ text: "OK", style: "cancel" }]);
+      }, 500);
+      navigation.navigate("Login");
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+        if(error.response.status == 400){
+          alert("Enter a valid email address")
+        }
+        else{
+          alert(error.response.data)
+        }
+      }
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+  }
 
   return (
     <View style={styles.container}>
@@ -131,7 +143,10 @@ export const Signup = ({ navigation }: SignupScreenProps) => {
 
         <View style={{ alignItems: "center" }}>
           <TouchableOpacity
-            onPress={() => navigation.navigate(RootScreens.DETAIL)}
+            onPress={() => {
+              setLoading(true);
+              handleSubmit();
+            }}
             style={{
               minWidth: "45%",
               backgroundColor: "#FE724C",
@@ -218,8 +233,8 @@ export const Signup = ({ navigation }: SignupScreenProps) => {
             </View>
           </Button>
         </View>
-        
       </View>
+      <LoadingModal visible={loading}/>
     </View>
   );
 };

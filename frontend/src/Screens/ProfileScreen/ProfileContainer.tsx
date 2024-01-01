@@ -15,22 +15,22 @@ import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAppSelector } from "@/Hooks/redux";
+import ScreenTitle from "@/Components/ScreenTitle";
 
 export const ProfileContainer = () => {
-
-  const token = useAppSelector(state => state.user.token);
+  const token = useAppSelector((state) => state.user.token);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({
-    id: '',
-    email: '',
-    full_name: '',
-    gender: '',
-    day_of_birth: '',
+    id: "",
+    email: "",
+    full_name: "",
+    gender: "",
+    day_of_birth: "",
     height: 0,
     weight: 0,
-    activity_level: '',
+    activity_level: "",
     tdee: 0,
-    avatar: ''
+    avatar: "",
   });
   const [gender, setGender] = useState(""); // State to store selected gender
   const [showForm, setShowForm] = useState(false);
@@ -47,13 +47,13 @@ export const ProfileContainer = () => {
   const handleGenderChange = (itemValue: React.SetStateAction<string>) => {
     setGender(itemValue);
   };
-  const user_id = useAppSelector(state => state.user.user.id);
+  const user_id = useAppSelector((state) => state.user.user.id);
   const fetchUser = async () => {
     await axios
       .get(`http://103.77.214.189:8000/user/${user_id}/`, {
         headers: {
           accept: "application/json",
-          Authorization: "Bearer " + token
+          Authorization: "Bearer " + token,
         },
       })
       .then((res) => {
@@ -112,23 +112,52 @@ export const ProfileContainer = () => {
         </HStack>
       ) : (
         <View>
+          <ScreenTitle title="Profile" />
           <View
             style={{
               alignItems: "center",
             }}
           >
             <TouchableOpacity>
-              <Ionicons
-                name="md-person-circle-outline"
-                size={30}
-                color="black"
-              />
+              <View
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 75,
+                  borderWidth: 1,
+                  borderColor: "#fff",
+                  overflow: "hidden",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Image
+                  source={require("../../../assets/avatar.png")}
+                  alt="image"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    resizeMode: "cover",
+                  }}
+                />
+              </View>
             </TouchableOpacity>
             <View>
-              <Text> {user.full_name}</Text>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 18,
+                }}
+              >
+                {" "}
+                {user.full_name}
+              </Text>
             </View>
             <View>
-              <Text> {user.activity_level}</Text>
+              <Text>
+                {" "}
+                {user.activity_level ? user.activity_level : "Standard"}
+              </Text>
             </View>
             <TouchableOpacity
               style={{
@@ -206,7 +235,7 @@ export const ProfileContainer = () => {
                   color: "black",
                 }}
                 editable={false}
-                value={user.tdee.toString()}
+                value={user.tdee ? user.tdee.toString() : "0"}
               />
 
               <TouchableOpacity onPress={displayForm}>
@@ -279,7 +308,7 @@ export const ProfileContainer = () => {
                         onChangeText={(text) =>
                           handleChangeInfo("weight", text)
                         }
-                        value={user.weight.toString()}
+                        value={user.weight ? user.weight.toString() : "0"}
                       />
                     </View>
 
@@ -301,7 +330,7 @@ export const ProfileContainer = () => {
                         onChangeText={(text) =>
                           handleChangeInfo("height", text)
                         }
-                        value={user.height.toString()}
+                        value={user.height ? user.height.toString() : "0"}
                       />
                     </View>
                   </View>
@@ -309,10 +338,10 @@ export const ProfileContainer = () => {
                   <View
                     style={{
                       alignItems: "center",
-                      marginBottom: 10
+                      marginBottom: 10,
                     }}
                   >
-                    <Text style={{fontSize: 18}}>
+                    <Text style={{ fontSize: 18 }}>
                       {" "}
                       Current TDEE:{" "}
                       <Text
@@ -322,7 +351,8 @@ export const ProfileContainer = () => {
                         }}
                       >
                         {user.tdee}
-                      </Text> Calories per day
+                      </Text>{" "}
+                      Calories per day
                     </Text>
                   </View>
 
