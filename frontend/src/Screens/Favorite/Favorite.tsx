@@ -72,7 +72,7 @@ export const Favorite = ({navigation}) => {
         }}
       ></View>
       <View>
-        <ScreenTitle title="Favorite" />
+        <ScreenTitle title="Favorite" navigation={navigation}/>
         {loading ? (
           <HStack space={2} justifyContent="center">
             <Spinner accessibilityLabel="Loading posts" />

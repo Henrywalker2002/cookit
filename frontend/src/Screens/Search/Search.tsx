@@ -144,7 +144,7 @@ const Search = ({navigation}) => {
     style={styles.screenContainer}>
       {showShutImage()}
 
-      <ScreenTitle title="Search" />
+      <ScreenTitle title="Search" navigation={navigation}/>
       <Flex direction="row" mb={2.5} mt={1.5} justify="space-around">
         <Flex
           direction="row"

@@ -112,6 +112,7 @@ export const DetailContainer = ({ route, navigation }) => {
     })
     .finally(() => {
       setModalLoading(false);
+      closeForm();
     });
   };
 
