@@ -35,6 +35,7 @@ export const MainNavigator = () => {
         component={Search}
         options={{
           tabBarLabel: "Search",
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <AntDesign name="search1" size={24} color={color} />
           ),

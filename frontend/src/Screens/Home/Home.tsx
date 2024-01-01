@@ -67,38 +67,6 @@ export const Home = (props: IHomeProps) => {
     fetchFood();
   });
 
-  const section = (name: string) => {
-    let hold = [1, 1, 1, 1];
-    return (
-      <>
-        <Flex
-          direction="row"
-          justify="space-between"
-          wrap="wrap"
-          alignContent={"center"}
-        >
-          <View>
-            <Text style={styles.label}>{name}</Text>
-          </View>
-          <TouchableOpacity>
-            <Text>View All </Text>
-          </TouchableOpacity>
-        </Flex>
-        <Flex
-          direction="row"
-          style={{ gap: 3 }}
-          justify="center"
-          wrap="wrap"
-          alignContent={"space-around"}
-        >
-          {recent_food.map((item,idx) => (
-            <DishBox navigation={navigation} food={item} index={idx} />
-          ))}
-        </Flex>
-      </>
-    );
-  };
-
   return (
     <Flex style={styles.container}>
       <ScreenTitle title="Dashboard" />
@@ -132,15 +100,15 @@ export const Home = (props: IHomeProps) => {
             wrap="wrap"
             alignContent={"space-around"}
           >
-            {foodList.results.map((item, idx) => {
+            {foodList.results.map((item,index) => {
               return (
-                <DishBox navigation={navigation} food={item} index={idx} />
+                <DishBox navigation={navigation} food={item} index={index}/>
               );
             })}
           </Flex>
         )}
         {/* Recent food  */}
-        {section("Recent recipes")}
+
       </ScrollView>
 
       <StatusBar />

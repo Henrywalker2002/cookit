@@ -7,11 +7,11 @@ export const OnBoarding1 = (props : {
     return (
         <View style = {style.Container}>
             <View style={styles.slide}>
-                <Image source={require("../../../assets/onb1.png")} style={styles.image} />
+                <Image source={require("../../../assets/onb1.png")} style={styles.image} alt="image"/>
                 <Text style={styles.text}>Welcome to our App</Text>
             </View>
             <View style={styles.slide}>
-                <Image source={require('./assets/onboarding2.jpg')} style={styles.image} />
+                <Image source={require('./assets/onboarding2.jpg')} style={styles.image} alt="image" />
                 <Text style={styles.text}>Get started with our amazing features</Text>
             </View>
         </View>

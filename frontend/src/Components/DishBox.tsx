@@ -38,14 +38,13 @@ import LoadingModal from "./CustomModal/LoadingModal";
 import SuccessModal from "./CustomModal/SuccessModal";
 
 const DishBox = (props: DishBoxProps) => {
-  const { food, navigation, index } = props;
+  const { food, navigation,index } = props;
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.user.token);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  
+
   const handleAddToFavorite = async () => {
-    console.log("TOken: ", token);
     await axios
       .post(
         `http://103.77.214.189:8000/favorite-food/`,
@@ -56,7 +55,7 @@ const DishBox = (props: DishBoxProps) => {
           headers: {
             accept: "application/json",
             Authorization: "Bearer " + token,
-          }
+          },
         }
       )
       .then((res) => {
@@ -85,6 +84,12 @@ const DishBox = (props: DishBoxProps) => {
         setLoading(false);
       });
   };
+  const handelToDetail = (_food) => {
+    dispatch(UPDATE_RECENT(_food));
+    navigation.navigate("Detail", {
+      food_id: _food.id,
+    });
+  };
   return (
     <Box
       maxW="49%"
@@ -107,12 +112,10 @@ const DishBox = (props: DishBoxProps) => {
       }}
     >
       <TouchableOpacity
-        onPress={() =>{
-          dispatch(UPDATE_RECENT(food))
-          return navigation.navigate("Detail", {
-            food_id: food.id,
-          })}
-        }
+        onPress={() => handelToDetail(food)}
+        // onPress={() =>navigation.navigate("Detail", {
+        //   food_id: food.id,
+        // })}
       >
         <Box>
           <AspectRatio w="100%" ratio={16 / 9}>
@@ -205,7 +208,7 @@ const DishBox = (props: DishBoxProps) => {
         <Ionicons name="heart-circle" size={24} color="#FE724C" />
       </TouchableOpacity>
 
-      <LoadingModal visible={loading}/>
+      <LoadingModal visible={loading} />
       <SuccessModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}

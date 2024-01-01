@@ -27,7 +27,7 @@ export interface IDetail{
   navigation: any;
 }
 
-export const DetailContainer = ({ route, navigation }: IDetail) => {
+export const DetailContainer = ({ route, navigation }) => {
   const { food_id } = route.params;
   // const food_id = 5;
   const [detail, setDetail] = useState({
@@ -52,6 +52,7 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
   const [text, setText] = useState("");
   const [rating, setRating] = useState(0);
   const [showForm, setShowForm] = useState(false);
+  const [modlaLoading, setModalLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const token = useAppSelector((state) => state.user.token);
   const handleTextChange = (inputText: React.SetStateAction<string>) => {
@@ -74,8 +75,9 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
 
   const handleSubmit = async () => {
     await axios
-    .post(`http://103.77.214.189:8000/food/${food_id}/feed_backs`,{
-      star: rating
+    .post(`http://103.77.214.189:8000/food/${food_id}/feedback/`,{
+      rating: rating,
+      comment: text
     }, {
       headers: {
         accept: "application/json",
@@ -83,11 +85,14 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
       },
     })
     .then((res) => {
-      setTimeout(() => {
-        Alert.alert("Note", "Successfull", [
-          { text: "OK", style: "cancel" },
-        ]);
-      }, 5000);
+      // setTimeout(() => {
+      //   Alert.alert("Note", "Successfull", [
+      //     { text: "OK", style: "cancel" },
+      //   ]);
+      // }, 500);
+      Alert.alert("Note", "Successfull", [
+        { text: "OK", style: "cancel" },
+      ]);
     })
     .catch(function (error) {
       console.log(error);
@@ -105,7 +110,9 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
         }
       }
     })
-    .finally(closeForm);
+    .finally(() => {
+      setModalLoading(false);
+    });
   };
 
   const fetchDetail = async () => {
@@ -171,7 +178,7 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
         }
       })
       .finally(() => {
-        setLoading(false);
+        setModalLoading(false);
       });
   };
 
@@ -186,27 +193,14 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
         backgroundColor: "#fff",
       }}
     >
-      {/* <View
+      <View
         style={{
           width: "100%",
           height: "6%",
         }}
       ></View>
       <View>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            padding: 3,
-            backgroundColor: "#FFFFFF",
-            borderRadius: 10,
-            width: "10%",
-            margin: 5,
-            elevation: 8,
-          }}
-        >
-          <AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-      </View> */}
+      </View>
       {loading ? (
         <HStack space={2} justifyContent="center">
           <Spinner accessibilityLabel="Loading posts" />
@@ -217,42 +211,6 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
       ) : (
         <ScrollView style={styles.scrollView}>
           <View style={{ paddingHorizontal: 15 }}>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={{
-                position: "absolute",
-                top: 5,
-                right: 5,
-                padding: 2,
-                backgroundColor: "rgba(255,255,255,0.75)",
-                borderRadius: 10,
-              }}
-            >
-              <AntDesign name="left" size={24} color="black" />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                setLoading(true);
-                handleAddToFavorite();
-              }}
-              style={{
-                position: "absolute",
-                top: 5,
-                right: 5,
-                padding: 2,
-                backgroundColor: "rgba(255,255,255,0.75)",
-                borderRadius: 10,
-              }}
-            >
-              <Ionicons name="heart-circle" size={24} color="#FE724C" />
-            </TouchableOpacity>
-            <LoadingModal visible={loading} />
-            <SuccessModal
-              visible={modalVisible}
-              onClose={() => setModalVisible(false)}
-            />
-
             <View
               style={{
                 alignItems: "center",
@@ -267,6 +225,7 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
                 source={{
                   uri: detail.image,
                 }}
+                alt="image"
               />
             </View>
             <View
@@ -362,7 +321,7 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
                 {" "}
                 Description
               </Text>
-              <Text>{detail.description}</Text>
+              <Text style={{letterSpacing: 0.5}}>{detail.description}</Text>
             </View>
 
             <View
@@ -399,7 +358,7 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
                       size={18}
                       color="rgb(254,114,76)"
                     />
-                    <Text>{ingredient.original}</Text>
+                    <Text style={{letterSpacing: 0.5}}>{ingredient.original}</Text>
                   </View>
                 );
               })}
@@ -430,7 +389,7 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
                       marginBottom: 5,
                     }}
                   >
-                    <Text>{`${idx + 1} - ${item.step}`}</Text>
+                    <Text style={{letterSpacing: 0.5}}>{`${idx + 1} - ${item.step}`}</Text>
                   </View>
                 );
               })}
@@ -566,7 +525,11 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
                       />
                       <Button
                         title="Send"
-                        onPress={handleSubmit}
+                        onPress={() => {
+                          closeForm();
+                          setModalLoading(true);
+                          handleSubmit();
+                        }}
                         color="#FE724C"
                       />
                     </View>
@@ -574,6 +537,41 @@ export const DetailContainer = ({ route, navigation }: IDetail) => {
                 </View>
               </Modal>
             </View>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{
+                position: "absolute",
+                top: 5,
+                left: 20,
+                padding: 2,
+                backgroundColor: "rgba(255,255,255,0.75)",
+                borderRadius: 10,
+              }}
+            >
+              <AntDesign name="left" size={24} color="black" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                setModalLoading(true);
+                handleAddToFavorite();
+              }}
+              style={{
+                position: "absolute",
+                top: 5,
+                right: 20,
+                padding: 2,
+                backgroundColor: "rgba(255,255,255,0.75)",
+                borderRadius: 10,
+              }}
+            >
+              <Ionicons name="heart-circle" size={24} color="#FE724C" />
+            </TouchableOpacity>
+            <LoadingModal visible={modlaLoading} />
+            <SuccessModal
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
+            />
           </View>
         </ScrollView>
       )}
