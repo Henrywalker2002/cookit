@@ -21,7 +21,7 @@ const initialState: IUserState = {
   },
   token: "",
   isUsedApp: false,
-  recendFood: [],
+  recendFood: []
 };
 
 const slice = createSlice({

@@ -56,6 +56,7 @@ export const MainNavigator = () => {
         component={Favorite}
         options={{
           tabBarLabel: "Favorite",
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="favorite-border" size={24} color={color} />
           ),

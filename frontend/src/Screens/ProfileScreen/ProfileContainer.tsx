@@ -10,7 +10,7 @@ import {
   TextInput,
   Modal,
 } from "react-native";
-
+import DropDownPicker from "react-native-dropdown-picker";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import { useFocusEffect } from "@react-navigation/native";
@@ -32,6 +32,12 @@ export const ProfileContainer = () => {
     tdee: 0,
     avatar: "",
   });
+
+  const [items, setItems] = useState([
+    { label: "MALE", value: "MALE" },
+    { label: "FEMALE", value: "FEMALE" },
+  ]);
+  const [open, setOpen] = useState(false);
   const [gender, setGender] = useState(""); // State to store selected gender
   const [showForm, setShowForm] = useState(false);
 
@@ -210,9 +216,22 @@ export const ProfileContainer = () => {
               value={user.email}
             />
 
-            <Text> Gender </Text>
+            <View style={{marginBottom: 20,}}>
+              <Text>Gender:</Text>
+              <DropDownPicker
+                open={open}
+                value={gender}
+                items={items}
+                setOpen={setOpen}
+                setValue={setGender}
+                setItems={setItems}
 
-            <Text>Date of Birth</Text>
+                listItemContainerStyle={{backgroundColor: '#fafafa',}}
+                listItemLabelStyle={{backgroundColor: '#fafafa',}}
+              />
+            </View>
+
+            {/* <Text>Date of Birth</Text> */}
 
             <Text>Current TDEE</Text>
             <View
@@ -238,9 +257,9 @@ export const ProfileContainer = () => {
                 value={user.tdee ? user.tdee.toString() : "0"}
               />
 
-              <TouchableOpacity onPress={displayForm}>
+              {/* <TouchableOpacity onPress={displayForm}>
                 <Text>Update</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <Modal
               visible={showForm}
