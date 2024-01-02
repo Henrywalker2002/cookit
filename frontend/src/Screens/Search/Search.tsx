@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import DishBox from "@/Components/DishBox";
 import axios from "axios";
@@ -10,9 +15,10 @@ import {
   ScrollView,
   Modal,
   Center,
+  Image,
+  Text,
 } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
-import NavBar from "@/Components/NavBar";
 import { launchCameraAsync } from "expo-image-picker";
 import ScreenTitle from "@/Components/ScreenTitle";
 import { useAppSelector } from "@/Hooks/redux";
@@ -21,10 +27,17 @@ const avt = require("../../../assets/search/MaskGroup.png");
 const tab = require("../../../assets/search/tab.png");
 const filter = require("../../../assets/search/filter.png");
 
-const Search = ({navigation}) => {
+interface SearchProps {
+  navigation: any;
+}
+const Search: React.FC<SearchProps> = ({ navigation }) => {
   const [rcmDishLst, setRcmDishLst] = useState([]);
   const jwtToken = useAppSelector((state) => state.user.token);
   const recentFood = useAppSelector((state) => state.user.recendFood);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showNoteModal, setShowNoteModal] = useState(false);
+  const [noteHeader, setNoteHeader] = useState("");
+  const [noteBody, setNoteBody] = useState("");
   const uploadImgToSearch = async (uri: string, fileName: string) => {
     try {
       const fData = new FormData();
@@ -33,10 +46,12 @@ const Search = ({navigation}) => {
         type: "image/png",
         name: "image.png",
       });
+      setIsLoading(true);
       let _resp = await axios.post(
         "http://103.77.214.189:8000/food/search-by-image/",
         fData,
         {
+          params: fData,
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: "Bearer " + jwtToken,
@@ -47,16 +62,31 @@ const Search = ({navigation}) => {
       console.log(_resp.data);
       if (_resp.data["count"] >= 6)
         setRcmDishLst(_resp.data["results"].slice(0, 6));
-      else setRcmDishLst(_resp.data["results"]);
-    } catch (error) {
+      else if (_resp.data["count"] != 0) setRcmDishLst(_resp.data["results"]);
+      else {
+        setSearchText("egg");
+        searchByText();
+      }
+      setIsLoading(false);
+      return 1;
+    } catch (error: any) {
       if (error.response) {
+        console.log("Got an resonse error");
         console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.headers);
+        setNoteHeader("Error 😾");
+        setNoteBody(error.response.data.message);
+        setIsLoading(false);
+        return -1;
       } else if (error.request) {
-        console.log(error.request);
+        console.log("Got an request error", error.request);
+        setNoteHeader("Error 😾");
+        setNoteBody(" Sorry! Something bad in air, please try again!");
+        setIsLoading(false);
+        return -1;
       } else {
-        console.log("Error", error.message);
+        console.log("Got an strange error", error.message);
       }
     }
   };
@@ -74,12 +104,19 @@ const Search = ({navigation}) => {
     if (!photo.canceled) {
       const { uri } = photo.assets[0];
       const fileName = uri.split("/").pop();
-      console.log("filename:" + fileName);
+      console.log(fileName);
+      let uploadResp = null;
       try {
-        const uploadResp = await uploadImgToSearch(uri, fileName || "untitled");
+        uploadResp = await uploadImgToSearch(uri, fileName || "untitled");
+        return 1;
       } catch (error) {}
-      setImageSrc(photo.assets[0].uri);
-      setModalVisible(true);
+      setIsLoading(false);
+      if (uploadResp == 1) {
+        setImageSrc(photo.assets[0].uri);
+        setModalVisible(true);
+      } else {
+        setShowNoteModal(true);
+      }
     } else {
       alert("You did not shot any image!");
     }
@@ -94,11 +131,26 @@ const Search = ({navigation}) => {
               <Text>Image shut by you:</Text>
             </Modal.Header>
             <Modal.Body>
-              <Image
-                source={{ uri: imageSrc }}
-                style={{ width: 600, height: 600 }}
-                alt="image"
-              />
+              <Image source={{ uri: imageSrc }} size={"2xl"} alt="image" />
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
+      </Center>
+    );
+  };
+  const showNoteByModal = () => {
+    return (
+      <Center>
+        <Modal isOpen={showNoteModal} onClose={() => setShowNoteModal(false)}>
+          <Modal.Content>
+            <Modal.CloseButton />
+            <Modal.Header>
+              <Text fontWeight={500} letterSpacing={0.5} lineHeight={25}>
+                {noteHeader}
+              </Text>
+            </Modal.Header>
+            <Modal.Body>
+              <Text>{noteBody}</Text>
             </Modal.Body>
           </Modal.Content>
         </Modal>
@@ -116,8 +168,8 @@ const Search = ({navigation}) => {
             wrap="wrap"
             alignContent={"space-around"}
           >
-            {recentFood.map((item,index) => (
-              <DishBox navigation={navigation} food={item} index={index}/>
+            {recentFood.map((item, index) => (
+              <DishBox navigation={navigation} food={item} index={index} />
             ))}
           </Flex>
         </>
@@ -132,18 +184,65 @@ const Search = ({navigation}) => {
             wrap="wrap"
             alignContent={"space-around"}
           >
-            {rcmDishLst.map((dish,index) => (
-              <DishBox navigation={navigation} food={dish} index={index}/>
+            {rcmDishLst.map((dish, index) => (
+              <DishBox navigation={navigation} food={dish} index={index} />
             ))}
           </Flex>
         </>
       );
   };
+  const [searchText, setSearchText] = useState("");
+  const searchByText = async () => {
+    setRcmDishLst([]);
+    setIsLoading(true);
+    try {
+      let _resp = await axios.get(
+        "http://103.77.214.189:8000/food/get_foods_by_user",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + jwtToken,
+          },
+          params: {
+            name: searchText,
+          },
+        }
+      );
+      console.log(_resp.data);
+      if (_resp["data"]["recommended_foods"].length >= 6)
+        setRcmDishLst(_resp["data"]["recommended_foods"].slice(0, 6));
+      else setRcmDishLst(_resp["data"]["recommended_foods"]);
+      setIsLoading(false);
+    } catch (error: any) {
+      if (error.response) {
+        console.log("Got an resonse error");
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+        setNoteHeader("Error 😾");
+        setNoteBody(
+          "Sorry! Maybe some error in this way, please take a photo!"
+        );
+        setIsLoading(false);
+        setShowNoteModal(true);
+        return -1;
+      } else if (error.request) {
+        console.log("Got an request error", error.request);
+        setNoteHeader("Error 😾");
+        setNoteBody("Sorry! Something bad in air, please try again!");
+        setIsLoading(false);
+        setShowNoteModal(true);
+        return -1;
+      } else {
+        setIsLoading(false);
+        console.log("Got an strange error", error.message);
+      }
+    }
+  };
   return (
-    <View
-    style={styles.screenContainer}>
+    <View style={styles.screenContainer}>
       {showShutImage()}
-
+      {showNoteByModal()}
       <ScreenTitle title="Search" />
       <Flex direction="row" mb={2.5} mt={1.5} justify="space-around">
         <Flex
@@ -152,11 +251,15 @@ const Search = ({navigation}) => {
           alignItems={"center"}
           style={{ marginLeft: 20, gap: 5, margin: 5 }}
         >
-          <TouchableOpacity onPress={() => alert("you press search btn")}>
+          <TouchableOpacity onPress={searchByText}>
             <AntDesign name="search1" size={24} color="black" />
           </TouchableOpacity>
           <FormControl width={"60%"}>
-            <Input placeholder="Search" height={8} />
+            <Input
+              placeholder="Search"
+              height={8}
+              onChange={(e: any) => setSearchText(e.target.value)}
+            />
           </FormControl>
           <TouchableOpacity
             onPress={() => {
@@ -177,13 +280,6 @@ const Search = ({navigation}) => {
         >
           <Text style={[styles.text, { color: "#FFFFFF" }]}>All</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-            style={styles.button}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={[styles.text, { color: "#FFFFFF" }]}>Shut image</Text>
-          </TouchableOpacity> */}
-
         <TouchableOpacity
           style={styles.button}
           onPress={() => alert("You pressed Title")}
@@ -197,6 +293,11 @@ const Search = ({navigation}) => {
           <Text style={styles.text}>Ingredient</Text>
         </TouchableOpacity>
       </Flex>
+      {isLoading && (
+        <View style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size="large" color="#FE724C" />
+        </View>
+      )}
       <ScrollView>{showDish()}</ScrollView>
     </View>
   );
@@ -248,6 +349,11 @@ const styles = StyleSheet.create({
   buttonLabel: {
     color: "#fff",
     fontSize: 16,
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
 });
 export default Search;
