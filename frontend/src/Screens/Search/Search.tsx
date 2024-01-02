@@ -243,7 +243,7 @@ const Search: React.FC<SearchProps> = ({ navigation }) => {
     <View style={styles.screenContainer}>
       {showShutImage()}
       {showNoteByModal()}
-      <ScreenTitle title="Search" />
+      <ScreenTitle title="Search" navigation={navigation}/>
       <Flex direction="row" mb={2.5} mt={1.5} justify="space-around">
         <Flex
           direction="row"

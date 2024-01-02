@@ -4,8 +4,10 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 const avt = require("../../assets/search/MaskGroup.png");
 const tab = require("../../assets/search/tab.png");
 import { Foundation } from "@expo/vector-icons";
+import { Sidebar } from "./Sidebar";
 interface ScreenTitleProp {
   title: string;
+  navigation: any
 }
 const ScreenTitle = (props: ScreenTitleProp) => {
   const [show, setShow] = useState(false);
@@ -30,6 +32,7 @@ const ScreenTitle = (props: ScreenTitleProp) => {
             }}
           >
             <Foundation name="align-left" size={20} color="#FE724C" />
+            <Sidebar visible={show} onClose={() => setShow(false)} navigation={props.navigation}/>
           </View>
         </TouchableOpacity>
         <Text style={[styles.title]}>{props.title}</Text>

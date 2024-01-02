@@ -97,7 +97,7 @@ export const Home = (props: IHomeProps) => {
   
   return (
     <Flex style={styles.container}>
-      <ScreenTitle title="Dashboard" />
+      <ScreenTitle title="Dashboard" navigation={navigation}/>
       <ScrollView>
         {/* Recommended food */}
         <Flex

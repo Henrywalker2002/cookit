@@ -20,7 +20,7 @@ import ScreenTitle from "@/Components/ScreenTitle";
 import { UPDATEUSER } from "@/Store/reducers";
 import LoadingModal from "@/Components/CustomModal/LoadingModal";
 
-export const ProfileContainer = () => {
+export const ProfileContainer = ({navigation}) => {
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.user.token);
   const [loading, setLoading] = useState(true);
@@ -185,7 +185,7 @@ export const ProfileContainer = () => {
         </HStack>
       ) : (
         <View>
-          <ScreenTitle title="Profile" />
+          <ScreenTitle title="Profile" navigation={navigation}/>
           <View
             style={{
               alignItems: "center",

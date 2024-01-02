@@ -26,7 +26,7 @@ type SignupScreenProps = CompositeScreenProps<
 
 export const Signup = ({ navigation }: SignupScreenProps) => {
   const [info, setInfo] = useState({
-    fullname: "",
+    full_name: "",
     email: "",
     password: "",
   });
@@ -101,9 +101,9 @@ export const Signup = ({ navigation }: SignupScreenProps) => {
             borderRadius: 10,
             color: "black",
           }}
-          onChangeText={(text) => handleChangeInfo("fullname", text)}
+          onChangeText={(text) => handleChangeInfo("full_name", text)}
           placeholder="Enter your fullname"
-          value={info.email}
+          value={info.full_name}
         />
 
         <Text> Email</Text>

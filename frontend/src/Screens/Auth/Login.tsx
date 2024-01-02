@@ -143,9 +143,13 @@ export const Login = ({ navigation }: LoginScreenProps) => {
 
         <View style={{ alignItems: "center" }}>
           <TouchableOpacity
-          onPress={() => {
-            navigation.navigate(RootScreens.MAIN)
-          }}>
+            onPress={() => {
+              Alert.alert(
+                "Note",
+                "This feature is currently being developed. Thank you for your patience and understanding!",
+                [{ text: "OK", style: "cancel" }]
+              );
+            }}>
             <Text
               style={{
                 color: "#FE724C",

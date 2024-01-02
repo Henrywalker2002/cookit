@@ -43,7 +43,7 @@ const slice = createSlice({
     },
     LOGOUT: (state, { payload: {} }) => {
       state.user = initialState.user;
-      state.token = initialState.token;
+      state.token = "";
       state.recendFood = [];
     },
     SETISUSED: (state, { payload: {} }) => {

@@ -354,9 +354,9 @@ export const ReviewContainer = ({ route, navigation }: IReview) => {
               margin: 5,
             }}
           >
-            {review.map((item) => {
+            {review.map((item,idx) => {
               return (
-                <View>
+                <View key={idx}>
                   <View
                     style={{
                       display: "flex",
