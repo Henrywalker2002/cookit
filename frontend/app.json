@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Expo Redux Template",
-    "slug": "expo-redux-template",
+    "name": "Cookit",
+    "slug": "cookit",
     "version": "1.1.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -46,7 +46,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "b42e3099-5381-4d34-b5f3-d9ca13d1400f"
+        "projectId": "7415b581-bbf3-4b64-b250-ab7a20bfdb31"
       }
     },
     "runtimeVersion": {
