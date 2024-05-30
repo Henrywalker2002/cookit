@@ -1,6 +1,3 @@
-# how to run backend 
-first install all package required by running cmd : pip install -r requirements.txt (remember to cd to path backend)
+# description 
 
-then run server by cmd : py manage.py runserver 
-
-now open browser and open http://127.0.0.1:8000/docs/ to view all api
+A mobile app helps user choose food and how to cookit. System can recommend for user food which bases on a photo of materials.
